@@ -6,29 +6,30 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-
+import java.util.List;
 
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Entity
-public class Comment extends Timestamped{
+public class Post extends Timestamped {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column
-    private String username;
+    private String title;
 
-    @Column(nullable = false)
+    @Column
     private String content;
 
-//    @JoinColumn(name = "post_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY) //게시글하나에 댓글이 여러개 연관관계
-//    private Post post;
+    @ElementCollection
+    private List<String> tag;
 
-
-
+//    @Column
+//    private String postimage;
+    
+    
 }
