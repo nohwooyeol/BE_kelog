@@ -23,11 +23,11 @@ public class Comment extends Timestamped{
     private String username;
 
     @Column(nullable = false)
-    private String content;
+    private String comment;
 
-//    @JoinColumn(name = "post_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY) //게시글하나에 댓글이 여러개 연관관계
-//    private Post post;
+    @JoinColumn(name = "post_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY) //게시글하나에 댓글이 여러개 연관관계
+    private Post post;
 
 
 
