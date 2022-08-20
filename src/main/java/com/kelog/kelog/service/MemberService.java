@@ -7,19 +7,26 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.repository.MemberRepository;
+import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
+import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.regex.Pattern;
 
 @Service
@@ -31,6 +38,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     private final PasswordEncoder passwordEncoder;
+
+    private final TokenProvider tokenProvider;
 
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
@@ -104,4 +113,25 @@ public class MemberService {
 
         return "회원가입에 성공했습니다!";
     }
+
+    public String login(LoginDto loginDto, HttpServletResponse response) {
+        Member member = existMember(loginDto.getAccount());
+
+
+        if (null == member) {
+            return "존재하지 않는 사용자입니다.";
+        }
+        if (!passwordEncoder.matches(loginDto.getPassword(),member.getPassword())) {
+            return "비밀번호가 맞지않습니다.";
+        }
+        String Token = tokenProvider.createToken(member);
+        response.addHeader("Authorization",Token);
+        return "로그인에 성공했습니다.";
+    }
+//    멤버 조회용
+    public Member existMember(String account){
+        Optional<Member> member = memberRepository.findByAccount(account);
+        return member.orElse(null);
+    }
+
 }

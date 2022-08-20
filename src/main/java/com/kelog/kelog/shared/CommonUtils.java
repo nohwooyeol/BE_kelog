@@ -1,8 +1,14 @@
 package com.kelog.kelog.shared;
 
 
+import lombok.Getter;
+import org.springframework.beans.factory.annotation.Value;
 
+@Getter
 public class CommonUtils {
+
+
+
     private static final String FILE_EXTENSION_SEPARATOR = ".";
 
     public static String buildFileName(String originalFileName) {
