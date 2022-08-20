@@ -30,7 +30,7 @@ public class MemberService {
 
 
     public String Signup(MultipartFile multipartFile, SignUpRequestDto requestDto) throws IOException {
-
+        System.out.println("-----------------------------");
 
         String imgurl;
 
@@ -49,7 +49,7 @@ public class MemberService {
         } else {
             imgurl = "https://fortestblog.s3.amazonaws.com/profileimage.png";
         }
-
+        System.out.println("12313123");
         Member newMember = new Member(requestDto,imgurl);
 
         memberRepository.save(newMember);

@@ -1,4 +1,4 @@
-package com.kelog.kelog.reponse;
+package com.kelog.kelog.response;
 
 import com.kelog.kelog.domain.Post;
 import lombok.AllArgsConstructor;
@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -20,6 +21,6 @@ public class PostResponseDto {
     private String content;
     private String imgUrl;
     private Long heartCount;
-    private LocalDateTime createdAt;
-    private LocalDateTime modifiedAt;
+    private LocalDate createdAt;
+    private LocalDate modifiedAt;
 }

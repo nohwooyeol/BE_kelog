@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 
 @Builder
 @Getter
@@ -21,6 +23,10 @@ public class CommentResponseDto {
     private String username;
 
     private String comment;
+
+    private LocalDate createdAt;
+
+    private LocalDate modifiedAt;
 
 
 }

@@ -3,11 +3,11 @@ package com.kelog.kelog.service;
 
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
-import com.kelog.kelog.reponse.PostResponseDto;
-import com.kelog.kelog.reponse.ResponseDto;
+import com.kelog.kelog.response.PostResponseDto;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,8 @@ public class PostService{
     @Transactional
     public ResponseDto<?> createPost(PostRequestDto requestDto, HttpServletRequest request)
     {
+
+
         Member member = memberRepository.getReferenceById(1L);
 
         Post post = Post.builder()

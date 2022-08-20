@@ -1,4 +1,4 @@
-package com.kelog.kelog.domain.controller;
+package com.kelog.kelog.controller;
 
 import com.kelog.kelog.request.SignUpRequestDto;
 import com.kelog.kelog.service.MemberService;
@@ -23,7 +23,7 @@ public class MemberController {
     @ResponseBody
     public String Signup(@RequestPart(required = false,value = "file") MultipartFile multipartFile,
                          @RequestPart(value = "info")SignUpRequestDto requestDto) throws IOException {
-
+        System.out.println("---------------------------------------------------------");
 
         return memberService.Signup(multipartFile,requestDto);
     }

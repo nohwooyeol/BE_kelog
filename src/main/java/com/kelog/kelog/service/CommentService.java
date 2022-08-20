@@ -9,7 +9,9 @@ import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -19,9 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @RequiredArgsConstructor
 @Service
-@Component
 public class CommentService {
     
     private final CommentRepository commentRepository;
@@ -29,6 +31,8 @@ public class CommentService {
     private final MemberRepository memberRepository;
 
     private final PostRepository postRepository;
+
+    private final CheckUtill checkUtill;
 
 
 
@@ -39,56 +43,57 @@ public class CommentService {
                                         HttpServletRequest request) {
 
         Member member = memberRepository.getReferenceById(1L);
+//        if(request.getHeader("Authorization")==null){
+//            return ResponseDto.fail("NOT_MEMBER","가입된 회원만 작성가능합니다");
+//        }
 
 
-        Post post = postRepository.getReferenceById(1L);
-
+        Post post = checkUtill.isPresentPost(postId);
 
 
         Comment comment = Comment.builder()
                 .post(post)
-                .member(member)
                 .username(member.getUsername())
                 .comment(commentRequestDto.getComment())
                 .build();
 
+        commentRepository.save(comment);
+
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .username(comment.getUsername())
+                .memberId()
                 .comment(comment.getComment())
+                .createdAt(comment.getCreatedAt())
+                .modifiedAt(comment.getModifiedAt())
                 .build();
-        commentRepository.save(comment);
+
         return ResponseDto.success(responseDto,"댓글이 등록되었습니다.");
     }
 
 
 
     @Transactional
-    public ResponseDto<?> getComment(Long postId,
+    public ResponseDto<?> getAllComment(Long postId,
                                      HttpServletRequest request) {
-        
-        // 아이디 조회
-        Member member = memberRepository.getReferenceById(1L);
 
-
-
-        Post post = postRepository.getReferenceById(1L);
-//        Post post = postRepository.findById(postId).orElse(null);
+        Post post = checkUtill.isPresentPost(postId);
         if(post == null){
             return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
         }
 
+
         List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        Long count = Long.valueOf(commentList.size());
+        Long count = (long) commentList.size();
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
                             .commentcount(count)
                             .commentId(comment.getId())
-                            .username(comment.getMember().getUsername())
+                            .username(comment.getUsername())
                             .comment(comment.getComment())
-                            .memberId(comment.getMember().getId())
+                            .memberId(post.getMember().getId())
                             .build()
             );
         }
@@ -105,15 +110,16 @@ public class CommentService {
         //회원 정보확인
         Member member = memberRepository.getReferenceById(1L);
 
-        Optional<Comment> optionalComment = commentRepository.findById(commentId);
-        Comment comment = optionalComment.orElse(null);
-        if (null == comment) {
-            return ResponseDto.fail("NOT_FOUND", "존재하지 않는 댓글 ID 입니다.");
+        Comment comment = checkUtill.isPresentComment(commentId);
+        if(comment == null){
+            return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
         }
+
         comment.update(commentRequestDto);
         return ResponseDto.success(
                 CommentResponseDto.builder()
-                .commentId(comment.getId())
+                        .commentId(comment.getId())
+                        .modifiedAt(comment.getModifiedAt())
                 .build(),
                 "댓글 수정완료");
     }
@@ -128,10 +134,10 @@ public class CommentService {
         //회원 정보 확인
         Member member = memberRepository.getReferenceById(1L);
 
+        Comment comment = checkUtill.isPresentComment(commentId);
 
+        commentRepository.delete(comment);
 
-        commentRepository.deleteById(commentId);
-
-        return ResponseDto.success(true,"댓글 삭제완료");
+        return ResponseDto.success(true,"댓글 삭제되었습니다");
     }
 }
