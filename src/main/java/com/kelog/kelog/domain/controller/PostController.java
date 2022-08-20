@@ -1,4 +1,4 @@
-package com.kelog.kelog.controller;
+package com.kelog.kelog.domain.controller;
 
 
 import lombok.RequiredArgsConstructor;

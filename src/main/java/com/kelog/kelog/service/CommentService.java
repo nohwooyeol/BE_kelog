@@ -9,6 +9,7 @@ import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
+@Component
 public class CommentService {
     
     private final CommentRepository commentRepository;
@@ -59,17 +61,31 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> getComment(Long postId,
                                      HttpServletRequest request) {
+        
+        // 아이디 조회
+
+
+
         Post post = postRepository.findById(postId).orElse(null);
         if(post == null){
             return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
         }
 
-        List<Comment> commentList = commentRepository.finAllByPost(post);
+        List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+        int count = commentList.size();
+        for (Comment comment : commentList) {
+            commentResponseDtoList.add(
+                    CommentResponseDto.builder()
+                            .commentId(comment.getId())
+                            .username(comment.getMember().getUsername())
+                            .comment(comment.getComment())
+                            .memberId(comment.getMember().getId())
+                            .build()
+            );
+        }
 
-
-
-        return ResponseDto.success("댓글조회완료");
+        return ResponseDto.success(commentResponseDtoList,"댓글 조회완료");
     }
 
 

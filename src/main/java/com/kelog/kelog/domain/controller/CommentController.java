@@ -1,4 +1,4 @@
-package com.kelog.kelog.controller;
+package com.kelog.kelog.domain.controller;
 
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.ResponseDto;
