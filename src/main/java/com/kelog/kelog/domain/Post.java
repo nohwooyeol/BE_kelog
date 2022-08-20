@@ -26,6 +26,7 @@ public class Post extends Timestamped {
     private String content;
 
     @ElementCollection
+    @Column
     private List<String> tag;
 
 //    @Column
