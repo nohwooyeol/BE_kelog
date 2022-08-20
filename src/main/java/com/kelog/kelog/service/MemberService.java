@@ -134,4 +134,8 @@ public class MemberService {
         return member.orElse(null);
     }
 
+//    토큰 실험용
+    public String test(HttpServletRequest request) {
+        return tokenProvider.getUserAccount(request);
+    }
 }
