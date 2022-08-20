@@ -1,39 +1,45 @@
 package com.kelog.kelog.domain;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
+import com.kelog.kelog.request.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-
 import javax.persistence.*;
+import java.util.List;
 
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
-@Getter
 @Entity
-public class Member extends Timestamped{
+@Getter
+@NoArgsConstructor
+public class Member {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column
     private String account;
 
-    @Column(nullable = false)
-    private Long password;
+    @Column
+    private String password;
 
-    @Column(nullable = false)
+    @Column
     private String username;
 
-    @Column(nullable = false)
+    @Column
     private String profileimage;
 
-    @Column(nullable = false)
+    @Column
     private String usercomment;
 
+//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
+//    private List<Posts> postList;
 
+    public Member(SignUpRequestDto requestDto,String image) {
+        this.account = requestDto.getAccount();
+        this.password = requestDto.getPassword();
+        this.username = requestDto.getUsername();
+        this.profileimage = image;
+        this.usercomment = requestDto.getUsercomment();
+    }
 
 }
