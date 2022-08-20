@@ -1,6 +1,7 @@
 package com.kelog.kelog.service;
 
 import com.kelog.kelog.domain.Comment;
+import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.MemberRepository;
@@ -37,22 +38,26 @@ public class CommentService {
                                         CommentRequestDto commentRequestDto,
                                         HttpServletRequest request) {
 
-        //유저 체크후
-        //포스트 체크후 객체에 담기
+        Member member = memberRepository.getReferenceById(1L);
+
+
+        Post post = postRepository.getReferenceById(1L);
 
 
 
         Comment comment = Comment.builder()
- //               .post(postId)
- //               .username(member.getaccount())
+                .post(post)
+                .member(member)
+                .username(member.getUsername())
                 .comment(commentRequestDto.getComment())
                 .build();
 
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
-                //.username(comment.getusername())
+                .username(comment.getUsername())
                 .comment(comment.getComment())
                 .build();
+        commentRepository.save(comment);
         return ResponseDto.success(responseDto,"댓글이 등록되었습니다.");
     }
 
@@ -63,20 +68,23 @@ public class CommentService {
                                      HttpServletRequest request) {
         
         // 아이디 조회
+        Member member = memberRepository.getReferenceById(1L);
 
 
 
-        Post post = postRepository.findById(postId).orElse(null);
+        Post post = postRepository.getReferenceById(1L);
+//        Post post = postRepository.findById(postId).orElse(null);
         if(post == null){
             return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
         }
 
         List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
-        int count = commentList.size();
+        Long count = Long.valueOf(commentList.size());
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
+                            .commentcount(count)
                             .commentId(comment.getId())
                             .username(comment.getMember().getUsername())
                             .comment(comment.getComment())
@@ -95,7 +103,7 @@ public class CommentService {
                                         CommentRequestDto commentRequestDto,
                                         HttpServletRequest request) {
         //회원 정보확인
-
+        Member member = memberRepository.getReferenceById(1L);
 
         Optional<Comment> optionalComment = commentRepository.findById(commentId);
         Comment comment = optionalComment.orElse(null);
@@ -118,6 +126,8 @@ public class CommentService {
                                         HttpServletRequest request) {
 
         //회원 정보 확인
+        Member member = memberRepository.getReferenceById(1L);
+
 
 
         commentRepository.deleteById(commentId);
