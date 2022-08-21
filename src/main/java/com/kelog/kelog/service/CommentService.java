@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,12 +46,12 @@ public class CommentService {
                 .comment(commentRequestDto.getComment())
                 .build();
 
-        CommentRequestDto requestDto = CommentResponseDto.builder()
+        CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
                 //.username(comment.getusername())
                 .comment(comment.getComment())
-                .build()
-        return ResponseDto.success(requestDto,"댓글이 등록되었습니다.");
+                .build();
+        return ResponseDto.success(responseDto,"댓글이 등록되었습니다.");
     }
 
 
@@ -62,6 +63,10 @@ public class CommentService {
         if(post == null){
             return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
         }
+
+        List<Comment> commentList = commentRepository.finAllByPost(post);
+        List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
+
 
 
         return ResponseDto.success("댓글조회완료");
