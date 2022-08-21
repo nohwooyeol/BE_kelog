@@ -2,7 +2,9 @@ package com.kelog.kelog.shared;
 
 
 
+
 public class CommonUtils {
+
     private static final String FILE_EXTENSION_SEPARATOR = ".";
 
     public static String buildFileName(String originalFileName) {
