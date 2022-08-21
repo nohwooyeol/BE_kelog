@@ -11,15 +11,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDto {
-    private Long memberId;
     private String title;
-    private List<String> Tags;
+    private List<String> tags = new ArrayList<>();
     private String content;
-    private String imgUrl;
-    private Long heart;
 
-    @Getter
-    public static class createTags{
-        public List<String> stringTagName = new ArrayList<>();
-    }
+//    @Getter
+//    public static class createTags{
+//        public List<String> stringTagName = new ArrayList<>();
+//    }
 }

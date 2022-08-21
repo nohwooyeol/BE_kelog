@@ -21,21 +21,21 @@ import java.io.IOException;
 public class MemberController {
 
     private final MemberService memberService;
-
+    //  회원가입
     @PostMapping("/register")
     @ResponseBody
     public String Signup(@RequestPart(value = "file") MultipartFile multipartFile,
                          @RequestPart(value = "info") SignUpRequestDto requestDto) throws IOException {
         return memberService.Signup(multipartFile,requestDto);
     }
-
+    //  로그인
     @PostMapping("/login")
     @ResponseBody
     public String signin(@RequestBody LoginDto loginDto,HttpServletResponse response){
 
         return memberService.login(loginDto,response);
     }
-
+    //  현재 로그인 유저 테스트용
     @GetMapping("/test")
     @ResponseBody
     public String Test(HttpServletRequest request){

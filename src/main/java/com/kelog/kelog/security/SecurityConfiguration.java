@@ -23,11 +23,13 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 
-@Configuration
-@EnableWebSecurity // 스프링 Security 지원을 가능하게 함
-@EnableGlobalMethodSecurity(securedEnabled = true)
+@Configuration // 설정파일 선언
+@EnableWebSecurity //시큐리티 활성화
+@EnableGlobalMethodSecurity(securedEnabled = true) 
+//메소드시큐리티를 사용가능하게 선언한다. (데스크탑시큐리티를 위한 기능) Role 권한 등
 @RequiredArgsConstructor
 @ConditionalOnWebApplication(type = ConditionalOnWebApplication.Type.SERVLET)
+// 웹 어플리케이션 컨텍스트일 경우 활성화 한다.
 public class SecurityConfiguration {
 
     @Value("${jwt.secret}")
@@ -36,7 +38,7 @@ public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
-// ------------------------뭔지 모름 검색 해봐야함
+    // ------------------------뭔지 모름 검색 해봐야함
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
 // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
@@ -50,7 +52,7 @@ public class SecurityConfiguration {
     }
 
 
-//     ----------------시큐리티 필터 선언 -----------------------
+    //     ----------------시큐리티 필터 선언 -----------------------
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -71,9 +73,9 @@ public class SecurityConfiguration {
 //                api 허용 목록!
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/register").permitAll()
-                .antMatchers("/api/login").permitAll()
+                .antMatchers("/**").permitAll()
                 .anyRequest().authenticated()
+
 //                필터 적용
                 .and()
                 .apply(new JwtConfiguration( secretKey, tokenProvider, userDetailsService));

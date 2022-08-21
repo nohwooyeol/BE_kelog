@@ -87,7 +87,7 @@ public class TokenProvider {
         return false;
     }
     //---------------------------------------------------------------------------------------------------
-    // JWT 토큰에서 인증 정보 조회
+    // JWT 토큰에서 인증 정보 조회 (Account 조회)
     public Authentication getAuthentication(String token) {
         UserDetails userDetails = userDetailsService.loadUserByUsername(this.getUserPk(token));
         return new UsernamePasswordAuthenticationToken(userDetails, "", userDetails.getAuthorities());
@@ -104,6 +104,7 @@ public class TokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(jwtToken).getBody().getSubject();
     }
     //---------------------------------------------------------------------------------------------------
+
     // 리퀘스트 헤더에서 토큰값가져오기
     public String takeToken(HttpServletRequest request) {
         return request.getHeader("Authorization").substring(7);

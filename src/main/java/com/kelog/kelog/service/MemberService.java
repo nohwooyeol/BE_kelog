@@ -43,12 +43,6 @@ public class MemberService {
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
-    @ExceptionHandler
-    public String handle(IOException ex) {
-        return "오류발생";
-    }
-
-
     public String Signup(MultipartFile multipartFile, SignUpRequestDto requestDto) throws IOException {
 //        ----------------------------------------------------------------------------------------------------
 //        유효성검사 부분

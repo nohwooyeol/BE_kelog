@@ -1,6 +1,11 @@
 package com.kelog.kelog.service;
 
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.util.IOUtils;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.reponse.PostResponseDto;
@@ -8,12 +13,22 @@ import com.kelog.kelog.reponse.ResponseDto;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.security.UserDetailsServiceImpl;
+import com.kelog.kelog.security.jwt.TokenProvider;
+import com.kelog.kelog.shared.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -25,20 +40,44 @@ public class PostService{
 
     private final MemberRepository memberRepository;
 
+    private final TokenProvider tokenProvider;
 
+    private final MemberService memberService;
 
+    private final UserDetailsServiceImpl userDetailsService;
+    private final AmazonS3Client amazonS3Client;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucketName;
 
     //게시물 작성
     @Transactional
-    public ResponseDto<?> createPost(PostRequestDto requestDto, HttpServletRequest request)
-    {
+    public ResponseDto<?> createPost(MultipartFile multipartFile, PostRequestDto requestDto, HttpServletRequest request) throws IOException {
+
         Member member = memberRepository.getReferenceById(1L);
+//        Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+
+        String imgurl = null;
+//        !multipartFile.isEmpty 쓸 때 오류!  빈값이 아닌 null 오면 오류 생김!
+        if (!(multipartFile == null)){
+            String fileName = CommonUtils.buildFileName(multipartFile.getOriginalFilename());
+            ObjectMetadata objectMetadata = new ObjectMetadata();
+            objectMetadata.setContentType(multipartFile.getContentType());
+
+            byte[] bytes = IOUtils.toByteArray(multipartFile.getInputStream());
+            objectMetadata.setContentLength(bytes.length);
+            ByteArrayInputStream byteArrayIs = new ByteArrayInputStream(bytes);
+
+            amazonS3Client.putObject(new PutObjectRequest(bucketName, fileName, byteArrayIs, objectMetadata)
+                    .withCannedAcl(CannedAccessControlList.PublicRead));
+            imgurl = amazonS3Client.getUrl(bucketName, fileName).toString();
+        }
+
 
         Post post = Post.builder()
                 .title(requestDto.getTitle())
                 .tags(requestDto.getTags())
                 .content(requestDto.getContent())
-                .imgUrl(requestDto.getImgUrl())
+                .imgUrl(imgurl)
                 .member(member)
                 .build();
         postRepository.save(post);
@@ -75,6 +114,23 @@ public class PostService{
         );
     }
 
+    @Transactional
+    public ResponseDto<?>getPostList(){
+        List<Post> postList = postRepository.findAll();
+        List<PostResponseDto> List = new ArrayList<>();
+        for (Post post: postList) {
+            List.add(PostResponseDto.builder()
+                    .id(post.getPostId())
+                    .title(post.getTitle())
+                    .tags(post.getTags())
+                    .content(post.getContent())
+                    .imgUrl(post.getImgUrl())
+                    .createdAt(post.getCreatedAt())
+                    .modifiedAt(post.getModifiedAt())
+                    .build());
+        }
+        return ResponseDto.success(List);
+    }
     // 게시글 수정
     @Transactional
     public  ResponseDto<?> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request)
