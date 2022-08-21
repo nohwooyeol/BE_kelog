@@ -62,7 +62,6 @@ public class CommentService {
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .username(comment.getUsername())
-                .memberId()
                 .comment(comment.getComment())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
@@ -89,11 +88,12 @@ public class CommentService {
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
-                            .commentcount(count)
                             .commentId(comment.getId())
                             .username(comment.getUsername())
                             .comment(comment.getComment())
                             .memberId(post.getMember().getId())
+                            .createdAt(comment.getCreatedAt())
+                            .modifiedAt(comment.getModifiedAt())
                             .build()
             );
         }
@@ -135,6 +135,9 @@ public class CommentService {
         Member member = memberRepository.getReferenceById(1L);
 
         Comment comment = checkUtill.isPresentComment(commentId);
+        if(comment == null){
+            return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
+        }
 
         commentRepository.delete(comment);
 

@@ -24,10 +24,11 @@ public class CheckUtill {
         return optionalPost.orElse(null);
     }
 
-    
     @Transactional(readOnly = true) //댓글이 있는지 확인
     public Comment isPresentComment(Long id) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         return optionalComment.orElse(null);
     }
+
+
 }
