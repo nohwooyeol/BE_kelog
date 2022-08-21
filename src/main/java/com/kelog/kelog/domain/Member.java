@@ -5,7 +5,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.sql.Blob;
 import java.util.List;
 
 @Entity
@@ -17,23 +16,24 @@ public class Member {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column (nullable = false)
+
+    @Column
     private String account;
 
-    @Column (nullable = false)
+    @Column
     private String password;
 
-    @Column (nullable = false)
+    @Column
     private String username;
 
-    @Column (nullable = false)
+    @Column
     private String profileimage;
 
-    @Column (nullable = false)
+    @Column
     private String usercomment;
 
-//    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-//    private List<Posts> postList;
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Post> postList;
 
     public Member(SignUpRequestDto requestDto,String image) {
         this.account = requestDto.getAccount();

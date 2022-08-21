@@ -36,7 +36,6 @@ public class MemberService {
     private final AmazonS3Client amazonS3Client;
 
     private final MemberRepository memberRepository;
-
     private final PasswordEncoder passwordEncoder;
 
     private final TokenProvider tokenProvider;
