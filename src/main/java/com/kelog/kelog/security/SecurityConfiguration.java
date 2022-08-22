@@ -1,8 +1,8 @@
-package com.kelog.kelog.Security;
+package com.kelog.kelog.security;
 
 
-import com.kelog.kelog.Security.jwt.JwtConfiguration;
-import com.kelog.kelog.Security.jwt.TokenProvider;
+import com.kelog.kelog.security.jwt.JwtConfiguration;
+import com.kelog.kelog.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
