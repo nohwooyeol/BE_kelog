@@ -127,4 +127,9 @@ public class MemberService {
     public String test(HttpServletRequest request) {
         return tokenProvider.getUserAccount(request);
     }
+
+    public boolean accountCheck(String account) {
+        Member member = existMember(account);
+        return !(member == null);
+    }
 }
