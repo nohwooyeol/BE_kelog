@@ -7,6 +7,7 @@ import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
+import com.kelog.kelog.response.CommentCountResponseDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
@@ -81,6 +82,7 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> getAllComment(Long postId) {
 
+
         Post post = checkUtill.isPresentPost(postId);
         if(post == null){
             return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
@@ -90,6 +92,7 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Long count = (long) commentList.size();
+
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
@@ -102,8 +105,12 @@ public class CommentService {
                             .build()
             );
         }
+        CommentCountResponseDto commentCountResponseDto =CommentCountResponseDto.builder()
+                .commentcount(count)
+                .responseDto(commentResponseDtoList)
+                .build();
 
-        return ResponseDto.success(commentResponseDtoList,"댓글 조회완료");
+        return ResponseDto.success(commentCountResponseDto,"댓글 조회완료");
     }
 
 
