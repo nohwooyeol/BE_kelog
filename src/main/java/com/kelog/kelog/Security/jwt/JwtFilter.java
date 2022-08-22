@@ -1,22 +1,16 @@
-package com.kelog.kelog.security.jwt;
+package com.kelog.kelog.Security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.kelog.kelog.response.ResponseDto;
-import com.kelog.kelog.security.UserDetailsServiceImpl;
+import com.kelog.kelog.Security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -27,9 +21,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.security.Key;
 import java.time.Instant;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 // OncePerRequestFilter = 사용자의 요청 한번에 한번만 실행되는 필터를 생성한다 = "필터결과를 재활용 한다"
