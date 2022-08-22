@@ -26,9 +26,8 @@ public class CommentController {
 
     //댓글 조회
     @GetMapping("/{postId}")
-    public ResponseDto<?> getAllComment(@PathVariable Long postId,
-                                 HttpServletRequest request ){
-        return commentService.getAllComment(postId,request);
+    public ResponseDto<?> getAllComment(@PathVariable Long postId){
+        return commentService.getAllComment(postId);
     }
 
     //댓글 수정

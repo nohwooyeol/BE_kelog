@@ -13,6 +13,7 @@ import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +27,8 @@ import java.util.List;
 @Service
 public class CommentService {
 
+
     private final CommentRepository commentRepository;
-
-    private final MemberRepository memberRepository;
-
-    private final PostRepository postRepository;
 
     private final CheckUtill checkUtill;
 
@@ -81,16 +79,7 @@ public class CommentService {
 
 
     @Transactional
-    public ResponseDto<?> getAllComment(Long postId,
-                                     HttpServletRequest request) {
-
-        String account = tokenProvider.getUserAccount(request);
-
-        Member member = memberService.existMember(account);
-
-        if(member==null){
-            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
-        }
+    public ResponseDto<?> getAllComment(Long postId) {
 
         Post post = checkUtill.isPresentPost(postId);
         if(post == null){
