@@ -1,16 +1,14 @@
 package com.kelog.kelog.util;
 
 import com.kelog.kelog.domain.Comment;
-import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.PostRepository;
-import com.kelog.kelog.security.jwt.TokenProvider;
+import com.kelog.kelog.Security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Component

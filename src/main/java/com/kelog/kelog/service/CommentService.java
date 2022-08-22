@@ -9,7 +9,7 @@ import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
-import com.kelog.kelog.security.jwt.TokenProvider;
+import com.kelog.kelog.Security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
