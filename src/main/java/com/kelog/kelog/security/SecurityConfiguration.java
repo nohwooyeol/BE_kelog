@@ -1,10 +1,7 @@
 package com.kelog.kelog.security;
 
 
-import com.kelog.kelog.security.jwt.JwtConfiguration;
-import com.kelog.kelog.security.jwt.TokenProvider;
-import com.kelog.kelog.shared.CommonUtils;
-import lombok.Getter;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -35,8 +32,8 @@ public class SecurityConfiguration {
     @Value("${jwt.secret}")
     private String secretKey;
     @Autowired
-    private final TokenProvider tokenProvider;
-    private final UserDetailsServiceImpl userDetailsService;
+    private final com.kelog.kelog.security.jwt.TokenProvider tokenProvider;
+    private final com.kelog.kelog.security.UserDetailsServiceImpl userDetailsService;
 
     // ------------------------뭔지 모름 검색 해봐야함
     @Bean
@@ -78,7 +75,7 @@ public class SecurityConfiguration {
 
 //                필터 적용
                 .and()
-                .apply(new JwtConfiguration( secretKey, tokenProvider, userDetailsService));
+                .apply(new com.kelog.kelog.security.jwt.JwtConfiguration( secretKey, tokenProvider, userDetailsService));
 
         return http.build();
     }
