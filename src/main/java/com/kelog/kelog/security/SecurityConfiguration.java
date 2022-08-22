@@ -3,6 +3,8 @@ package com.kelog.kelog.security;
 
 import com.kelog.kelog.security.jwt.JwtConfiguration;
 import com.kelog.kelog.security.jwt.TokenProvider;
+import com.kelog.kelog.shared.CommonUtils;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -69,7 +71,7 @@ public class SecurityConfiguration {
 //                api 허용 목록!
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers("/api/register").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
 //                필터 적용
