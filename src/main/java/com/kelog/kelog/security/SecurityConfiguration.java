@@ -71,7 +71,7 @@ public class SecurityConfiguration {
 //                api 허용 목록!
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/register").permitAll()
+                .antMatchers("/api/**").permitAll()
                 .antMatchers("/api/login").permitAll()
                 .anyRequest().authenticated()
 //                필터 적용

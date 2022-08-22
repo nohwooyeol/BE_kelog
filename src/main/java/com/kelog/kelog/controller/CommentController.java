@@ -20,6 +20,7 @@ public class CommentController {
     public ResponseDto<?> createComment(@PathVariable Long postId,
                                         @RequestBody CommentRequestDto commentRequestDto,
                                         HttpServletRequest request ){
+        System.out.println("-------------------------------------");
         return commentService.createComment(postId,commentRequestDto,request);
     }
 

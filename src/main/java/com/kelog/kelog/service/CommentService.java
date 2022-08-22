@@ -9,17 +9,17 @@ import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @Slf4j
 @RequiredArgsConstructor
@@ -34,6 +34,10 @@ public class CommentService {
 
     private final CheckUtill checkUtill;
 
+    private final TokenProvider tokenProvider;
+
+    private final MemberService memberService;
+
 
 
 
@@ -41,14 +45,18 @@ public class CommentService {
     public ResponseDto<?> createComment(Long postId,
                                         CommentRequestDto commentRequestDto,
                                         HttpServletRequest request) {
+        String account = tokenProvider.getUserAccount(request);
 
-        Member member = memberRepository.getReferenceById(1L);
-//        if(request.getHeader("Authorization")==null){
-//            return ResponseDto.fail("NOT_MEMBER","가입된 회원만 작성가능합니다");
-//        }
+        Member member = memberService.existMember(account);
 
+        if(member==null){
+            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+        }
 
         Post post = checkUtill.isPresentPost(postId);
+        if(post==null){
+            return ResponseDto.fail("NOT_POST","게시글이 없습니다.");
+        }
 
 
         Comment comment = Comment.builder()
@@ -75,6 +83,14 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> getAllComment(Long postId,
                                      HttpServletRequest request) {
+
+        String account = tokenProvider.getUserAccount(request);
+
+        Member member = memberService.existMember(account);
+
+        if(member==null){
+            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+        }
 
         Post post = checkUtill.isPresentPost(postId);
         if(post == null){
@@ -107,8 +123,14 @@ public class CommentService {
     public ResponseDto<?> updateComment(Long commentId,
                                         CommentRequestDto commentRequestDto,
                                         HttpServletRequest request) {
-        //회원 정보확인
-        Member member = memberRepository.getReferenceById(1L);
+
+        String account = tokenProvider.getUserAccount(request);
+
+        Member member = memberService.existMember(account);
+
+        if(member==null) {
+            return ResponseDto.fail("NOT_ACCOUNT", "로그인을 해주세요");
+        }
 
         Comment comment = checkUtill.isPresentComment(commentId);
         if(comment == null){
@@ -131,8 +153,14 @@ public class CommentService {
     public ResponseDto<?> deleteComment(Long commentId,
                                         HttpServletRequest request) {
 
-        //회원 정보 확인
-        Member member = memberRepository.getReferenceById(1L);
+        String account = tokenProvider.getUserAccount(request);
+
+        Member member = memberService.existMember(account);
+
+        if(member==null){
+            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+        }
+
 
         Comment comment = checkUtill.isPresentComment(commentId);
         if(comment == null){
