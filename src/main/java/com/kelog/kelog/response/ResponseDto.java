@@ -8,6 +8,7 @@ import lombok.Getter;
 public class ResponseDto<T> {
 
     private boolean result;
+
     private T data;
     private String message;
     private Error error;
@@ -44,4 +45,5 @@ public class ResponseDto<T> {
         private String code;
         private String message;
     }
+
 }
