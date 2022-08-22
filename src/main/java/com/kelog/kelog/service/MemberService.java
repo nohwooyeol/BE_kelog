@@ -9,13 +9,12 @@ import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
-import com.kelog.kelog.Security.jwt.TokenProvider;
+import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;

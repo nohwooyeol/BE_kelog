@@ -1,8 +1,8 @@
-package com.kelog.kelog.Security.jwt;
+package com.kelog.kelog.security.jwt;
 
 import com.kelog.kelog.domain.Member;
 
-import com.kelog.kelog.Security.UserDetailsServiceImpl;
+import com.kelog.kelog.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;

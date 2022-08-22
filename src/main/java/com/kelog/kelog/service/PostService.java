@@ -12,6 +12,7 @@ import com.kelog.kelog.response.PostResponseDto;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.UserDetailsServiceImpl;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
@@ -19,11 +20,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
