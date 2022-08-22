@@ -20,3 +20,4 @@ public abstract class Timestamped {
     @LastModifiedDate
     private LocalDate modifiedAt;
  }
+

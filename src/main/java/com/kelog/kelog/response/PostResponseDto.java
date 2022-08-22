@@ -7,7 +7,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -23,4 +22,16 @@ public class PostResponseDto {
     private Long heartCount;
     private LocalDate createdAt;
     private LocalDate modifiedAt;
+
+    public PostResponseDto(Post post) {
+        this.id = post.getPostId();
+        this.title = post.getTitle();
+        this.tags = post.getTags();
+        this.content = post.getContent();
+        this.imgUrl = post.getImgUrl();
+        this.heartCount = post.getHeartCount();
+        this.createdAt = post.getCreatedAt();
+        this.modifiedAt = post.getModifiedAt();
+    }
+
 }
