@@ -8,8 +8,7 @@ import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
-import com.kelog.kelog.reponse.PostResponseDto;
-import com.kelog.kelog.reponse.ResponseDto;
+import com.kelog.kelog.response.PostResponseDto;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.PostRequestDto;
@@ -25,10 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j

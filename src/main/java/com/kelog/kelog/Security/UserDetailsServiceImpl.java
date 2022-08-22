@@ -1,4 +1,4 @@
-package com.kelog.kelog.security;
+package com.kelog.kelog.Security;
 
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.repository.MemberRepository;

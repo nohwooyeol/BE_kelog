@@ -1,18 +1,13 @@
-package com.kelog.kelog.security.jwt;
+package com.kelog.kelog.Security.jwt;
 
 import com.kelog.kelog.domain.Member;
 
-import com.kelog.kelog.security.UserDetailsServiceImpl;
-import com.kelog.kelog.shared.Authority;
+import com.kelog.kelog.Security.UserDetailsServiceImpl;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import io.jsonwebtoken.security.SecurityException;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;

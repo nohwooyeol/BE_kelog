@@ -1,5 +1,5 @@
-package com.kelog.kelog.security.jwt;
-import com.kelog.kelog.security.UserDetailsServiceImpl;
+package com.kelog.kelog.Security.jwt;
+import com.kelog.kelog.Security.UserDetailsServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
