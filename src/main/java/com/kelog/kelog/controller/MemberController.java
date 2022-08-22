@@ -43,4 +43,10 @@ public class MemberController {
     }
 
 
+    @PostMapping("/idcheck")
+    @ResponseBody
+    public boolean idcheck(String account) {
+       return memberService.accountCheck(account);
+    }
+
 }
