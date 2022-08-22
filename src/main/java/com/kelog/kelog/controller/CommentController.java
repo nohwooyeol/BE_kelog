@@ -1,6 +1,6 @@
 package com.kelog.kelog.controller;
 
-import com.kelog.kelog.security.request.CommentRequestDto;
+import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.service.CommentService;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.kelog.kelog.controller;
 
 
-import com.kelog.kelog.security.request.PostRequestDto;
+import com.kelog.kelog.request.PostRequestDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.service.PostService;
 import lombok.RequiredArgsConstructor;
