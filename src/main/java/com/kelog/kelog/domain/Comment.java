@@ -1,6 +1,6 @@
 package com.kelog.kelog.domain;
 
-import com.kelog.kelog.request.CommentRequestDto;
+import com.kelog.kelog.security.request.CommentRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

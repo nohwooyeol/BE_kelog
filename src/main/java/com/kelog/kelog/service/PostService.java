@@ -11,7 +11,7 @@ import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.response.PostResponseDto;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
-import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.security.request.PostRequestDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.UserDetailsServiceImpl;
 import com.kelog.kelog.security.jwt.TokenProvider;

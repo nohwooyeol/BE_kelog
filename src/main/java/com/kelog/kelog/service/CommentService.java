@@ -6,7 +6,7 @@ import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
-import com.kelog.kelog.request.CommentRequestDto;
+import com.kelog.kelog.security.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;

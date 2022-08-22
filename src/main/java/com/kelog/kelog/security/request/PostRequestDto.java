@@ -1,4 +1,4 @@
-package com.kelog.kelog.request;
+package com.kelog.kelog.security.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
