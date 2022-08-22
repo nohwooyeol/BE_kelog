@@ -2,6 +2,8 @@ package com.kelog.kelog.controller;
 
 
 import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.response.PostAllByMemberResponseDto;
+import com.kelog.kelog.response.PostResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.service.PostService;
 import lombok.RequiredArgsConstructor;
@@ -10,12 +12,31 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/api")
 public class PostController {
     private final PostService postService;
+
+    //게시글전체 (메인페이지)
+    @GetMapping("")
+    public List<PostResponseDto> getAllPostings(@RequestParam("page") int page,
+                                                @RequestParam("size") int size){
+
+        return postService.getAllPost(page,size);
+    }
+    //게시글 해당 멤버 작성글 보기
+    @GetMapping("/{memberId}")
+    public PostAllByMemberResponseDto getMemberPostings(
+            @PathVariable Long memberId,
+            @RequestParam("page") int page,
+            @RequestParam("size") int size){
+
+
+        return postService.getMemberPost(memberId, page, size);
+    }
 
     //게시글 상세보기
     @GetMapping("/post/{id}")
