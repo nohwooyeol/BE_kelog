@@ -77,6 +77,7 @@ public class PostService{
                 .tags(requestDto.getTags())
                 .content(requestDto.getContent())
                 .imgUrl(imgurl)
+                .heartCount(0L)
                 .member(member)
                 .build();
         postRepository.save(post);

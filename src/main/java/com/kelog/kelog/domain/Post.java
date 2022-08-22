@@ -39,6 +39,9 @@ public class Post extends Timestamped{
     @Column
     private Long heartCount;
 
+    @OneToMany(mappedBy = "post", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Heart> heartList;
+
     @JsonIgnore
     @JoinColumn(name = "member_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
@@ -50,5 +53,8 @@ public class Post extends Timestamped{
         this.content = postRequestDto.getContent();
     }
 
+    public void updateHeart(Long heart){
+        this.heartCount = heart;
+    }
 
 }

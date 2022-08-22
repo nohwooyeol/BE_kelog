@@ -14,8 +14,8 @@ public class userCheck {
     public boolean existMember(Member member) {
         return memberRepository.existsByAccount(member.getAccount());
     }
-    
-//    멤버 아이디로 조회하기
+
+    //    멤버 아이디로 조회하기
     public boolean existMemberbyAccount(String account) {
         return memberRepository.existsByAccount(account);
     }
