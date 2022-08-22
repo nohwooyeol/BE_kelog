@@ -1,7 +1,7 @@
 package com.kelog.kelog.controller;
 
-import com.kelog.kelog.security.request.LoginDto;
-import com.kelog.kelog.security.request.SignUpRequestDto;
+import com.kelog.kelog.request.LoginDto;
+import com.kelog.kelog.request.SignUpRequestDto;
 import com.kelog.kelog.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

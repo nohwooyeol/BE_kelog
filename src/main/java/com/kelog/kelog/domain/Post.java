@@ -1,7 +1,7 @@
 package com.kelog.kelog.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.kelog.kelog.security.request.PostRequestDto;
+import com.kelog.kelog.request.PostRequestDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

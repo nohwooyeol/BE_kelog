@@ -6,7 +6,8 @@ import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
-import com.kelog.kelog.security.request.CommentRequestDto;
+import com.kelog.kelog.request.CommentRequestDto;
+import com.kelog.kelog.response.CommentCountResponseDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
@@ -69,6 +70,7 @@ public class CommentService {
 
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
+                .memberId(member.getId())
                 .username(comment.getUsername())
                 .comment(comment.getComment())
                 .createdAt(comment.getCreatedAt())
@@ -101,6 +103,7 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Long count = (long) commentList.size();
+
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
@@ -113,8 +116,12 @@ public class CommentService {
                             .build()
             );
         }
+        CommentCountResponseDto commentCountResponseDto =CommentCountResponseDto.builder()
+                .commentcount(count)
+                .responseDto(commentResponseDtoList)
+                .build();
 
-        return ResponseDto.success(commentResponseDtoList,"댓글 조회완료");
+        return ResponseDto.success(commentCountResponseDto,"댓글 조회완료");
     }
 
 

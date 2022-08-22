@@ -1,6 +1,6 @@
 package com.kelog.kelog.domain;
 
-import com.kelog.kelog.security.request.SignUpRequestDto;
+import com.kelog.kelog.request.SignUpRequestDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
