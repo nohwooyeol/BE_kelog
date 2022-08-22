@@ -1,5 +1,6 @@
 package com.kelog.kelog.controller;
 
+import com.kelog.kelog.request.IdCheckDto;
 import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
 import com.kelog.kelog.service.MemberService;
@@ -45,8 +46,8 @@ public class MemberController {
 
     @PostMapping("/idcheck")
     @ResponseBody
-    public boolean idcheck(String account) {
-       return memberService.accountCheck(account);
+    public boolean idcheck(@RequestBody IdCheckDto idCheckDto) {
+       return memberService.accountCheck(idCheckDto.getAccount());
     }
 
 }

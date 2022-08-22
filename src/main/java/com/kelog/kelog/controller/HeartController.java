@@ -12,13 +12,14 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/api")
 public class HeartController {
 
     private final HeartService heartService;
 
 
 
-    @PostMapping("/api/{id}/postheart")
+    @PostMapping("/postheart/{id}")
     public ResponseDto<?> Like(Long id, HttpServletRequest request){
 
 

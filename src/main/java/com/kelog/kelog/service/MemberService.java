@@ -36,6 +36,7 @@ public class MemberService {
 
     private final TokenProvider tokenProvider;
 
+
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
@@ -43,14 +44,6 @@ public class MemberService {
 //        ----------------------------------------------------------------------------------------------------
 //        유효성검사 부분
 //        아이디 패턴
-        String pattern = "[a-zA-Z\\d!@#$%^&*]*$";
-        if (!Pattern.matches(pattern, requestDto.getAccount())|| requestDto.getAccount().length()<8 || requestDto.getAccount().length() > 30) {
-            return "아이디 양식이 틀립니다.";
-        }
-//        비밀번호 패턴
-        if (!Pattern.matches(pattern, requestDto.getPassword())|| requestDto.getPassword().length()<8 || requestDto.getPasswordConfirm().length() > 30) {
-            return "비밀번호 양식이 틀립니다.";
-        }
 //        아이디 확인
         if (requestDto.getAccount() == null) {
             return "아이디를 적어주세요";
@@ -105,7 +98,10 @@ public class MemberService {
 
     public String login(LoginDto loginDto, HttpServletResponse response) {
         Member member = existMember(loginDto.getAccount());
-
+        System.out.println("--------------------------------------------------------");
+        System.out.println(member.getAccount());
+        System.out.println(loginDto.getAccount());
+        System.out.println("--------------------------------------------------------");
 
         if (null == member) {
             return "존재하지 않는 사용자입니다.";
@@ -115,7 +111,7 @@ public class MemberService {
         }
         String Token = tokenProvider.createToken(member);
         response.addHeader("Authorization",Token);
-        return "로그인에 성공했습니다.";
+        return "로그인에 성공했습니다."+"111111111";
     }
 //    멤버 조회용
     public Member existMember(String account){
@@ -127,9 +123,8 @@ public class MemberService {
     public String test(HttpServletRequest request) {
         return tokenProvider.getUserAccount(request);
     }
-
+// 아이디 체크
     public boolean accountCheck(String account) {
-        Member member = existMember(account);
-        return !(member == null);
+        return memberRepository.existsAllByAccount(account);
     }
 }
