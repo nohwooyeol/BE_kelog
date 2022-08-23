@@ -57,15 +57,12 @@ public class CommentService {
             return ResponseDto.fail("NOT_POST","게시글이 없습니다.");
         }
 
-
         Comment comment = Comment.builder()
                 .post(post)
                 .username(member.getUsername())
                 .comment(commentRequestDto.getComment())
                 .build();
-
         commentRepository.save(comment);
-
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
                 .username(comment.getUsername())
@@ -73,7 +70,6 @@ public class CommentService {
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .build();
-
         return ResponseDto.success(responseDto,"댓글이 등록되었습니다.");
     }
 
@@ -148,16 +144,14 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> deleteComment(Long commentId,
                                         HttpServletRequest request) {
-
+        System.out.println("-------------------------------------------------");
+        System.out.println(tokenProvider.takeToken(request));
+        System.out.println("-------------------------------------------------");
         String account = tokenProvider.getUserAccount(request);
-
         Member member = memberService.existMember(account);
-
         if(member==null){
             return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
         }
-
-
         Comment comment = checkUtill.isPresentComment(commentId);
         if(comment == null){
             return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
@@ -165,6 +159,6 @@ public class CommentService {
 
         commentRepository.delete(comment);
 
-        return ResponseDto.success(true,"댓글 삭제되었습니다");
+        return ResponseDto.success(commentId,"댓글 삭제되었습니다");
     }
 }

@@ -6,9 +6,11 @@ import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.util.IOUtils;
+import com.kelog.kelog.domain.Heart;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.domain.Tags;
+import com.kelog.kelog.repository.HeartRepository;
 import com.kelog.kelog.repository.TagsRepository;
 import com.kelog.kelog.response.*;
 import com.kelog.kelog.repository.MemberRepository;
@@ -54,6 +56,7 @@ public class PostService{
 
     private final UserDetailsServiceImpl userDetailsService;
     private final AmazonS3Client amazonS3Client;
+    private final HeartRepository heartRepository;
     @Value("${cloud.aws.s3.bucket}")
     private String bucketName;
 
@@ -108,11 +111,20 @@ public class PostService{
 
     //게시글 상세보기
     @Transactional
-    public ResponseDto<?> getPost(Long id){
+    public ResponseDto<?> getPost(Long id, HttpServletRequest request){
         Post post = isPresentPost(id);
         if (null == post){
             return ResponseDto.fail("NOT_POST", "게시글을 찾을 수 없습니다.");
         }
+        boolean existLike;
+        String account = tokenProvider.getUserAccount(request);
+        if (account==null) {
+            existLike = false;
+        } else {
+            Long memberid = memberService.existMember(account).getId();
+            existLike = heartRepository.existsAllByPostAndMemberId(post,memberid);
+        }
+
         return ResponseDto.success(
                 PostResponseDto.builder()
                         .id(post.getPostId())
@@ -121,30 +133,13 @@ public class PostService{
                         .content(post.getContent())
                         .imgUrl(post.getImgUrl())
                         .heartCount(post.getHeartCount())
+                        .heartPush(existLike)
                         .createdAt(post.getCreatedAt())
                         .modifiedAt(post.getModifiedAt())
                         .build()
-
         );
     }
 
-    @Transactional
-    public ResponseDto<?>getPostList(){
-        List<Post> postList = postRepository.findAll();
-        List<PostResponseDto> List = new ArrayList<>();
-        for (Post post: postList) {
-            List.add(PostResponseDto.builder()
-                    .id(post.getPostId())
-                    .title(post.getTitle())
-                    .tags(post.getTags())
-                    .content(post.getContent())
-                    .imgUrl(post.getImgUrl())
-                    .createdAt(post.getCreatedAt())
-                    .modifiedAt(post.getModifiedAt())
-                    .build());
-        }
-        return ResponseDto.success(List);
-    }
     // 게시글 수정
     @Transactional
     public  ResponseDto<?> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request)
@@ -179,8 +174,8 @@ public class PostService{
         return optionalContent.orElse(null);
     }
 
-    // 전체 게시글 조회 (최적화)
-    public List<PostAllByResponseDto> getAllPost(int page, int size) {
+    // 전체 게시글 조회 (NEW)
+    public List<PostAllByResponseDto> GetNewPost(int page, int size) {
         List<Post> postPaging = postRepository.findAllByPaging((PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"))));
        return postPaging
                 .stream()
@@ -189,7 +184,7 @@ public class PostService{
     }
 
     //  내 게시물 전체 목록
-    public PostAllByMemberResponseDto getMemberPost(Long memberId, int page, int size) {
+    public List<PostAllByResponseDto> getMemberPost(Long memberId, int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size);
 
@@ -198,13 +193,13 @@ public class PostService{
 
         List<Post> findPostByMember = postRepository.findAllMemberId(memberId,pageable);
 
-        List<PostResponseDto> postResponseDto = findPostByMember
+        List<PostAllByResponseDto> postResponseDto = findPostByMember
                 .stream()
-                .map(PostResponseDto::new)
+                .map(PostAllByResponseDto::new)
                 .collect(toList());
 
 
-        return new PostAllByMemberResponseDto(postResponseDto,memberResponseDto);
+        return postResponseDto;
 
     }
 

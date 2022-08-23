@@ -28,12 +28,6 @@ public class HeartService {
     //-----------------------------------------------------------------------------------------------------------------
     // 게시글 좋아요 & 취소
     public ResponseDto<?> Like(Long postId, HttpServletRequest request) {
-
-        if (null == request.getHeader("RefreshToken")) {
-            return ResponseDto.fail("MEMBER_NOT_FOUND",
-                    "로그인이 필요합니다.");
-        }
-
         if (null == request.getHeader("Authorization")) {
             return ResponseDto.fail("MEMBER_NOT_FOUND",
                     "로그인이 필요합니다.");
@@ -49,7 +43,6 @@ public class HeartService {
         if (null == post) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
         }
-
         // 게시글 좋아요 생성 & 삭제
         Heart checkHeart = heartRepository.findByMemberIdAndPost(member.getId(),post);
         if(!(checkHeart == null)){
@@ -73,7 +66,7 @@ public class HeartService {
 
     @Transactional(readOnly = true)
     public Post existPost(Long id) {
-        Optional<Post> optionalPost = postRepository.findById(id);
+        Optional<Post> optionalPost = postRepository.findByPostId(id);
         return optionalPost.orElse(null);
     }
 }

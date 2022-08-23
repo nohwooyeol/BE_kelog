@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface PostRepository extends JpaRepository<Post, Long> {
 
@@ -28,5 +29,7 @@ public interface PostRepository extends JpaRepository<Post, Long> {
             "where p.member.id = :memberId  "
              )
     List<Post> findAllMemberId(Long memberId, Pageable pageable);
+
+    Optional<Post> findByPostId(Long postid);
 
 }

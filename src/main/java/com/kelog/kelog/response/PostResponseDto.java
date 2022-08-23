@@ -20,6 +20,7 @@ public class PostResponseDto {
     private String content;
     private String imgUrl;
     private Long heartCount;
+    private boolean heartPush;
     private LocalDate createdAt;
     private LocalDate modifiedAt;
 
