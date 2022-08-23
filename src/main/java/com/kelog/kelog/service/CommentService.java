@@ -7,12 +7,14 @@ import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
+import com.kelog.kelog.response.CommentCountResponseDto;
 import com.kelog.kelog.response.CommentResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,11 +28,8 @@ import java.util.List;
 @Service
 public class CommentService {
 
+
     private final CommentRepository commentRepository;
-
-    private final MemberRepository memberRepository;
-
-    private final PostRepository postRepository;
 
     private final CheckUtill checkUtill;
 
@@ -81,16 +80,8 @@ public class CommentService {
 
 
     @Transactional
-    public ResponseDto<?> getAllComment(Long postId,
-                                     HttpServletRequest request) {
+    public ResponseDto<?> getAllComment(Long postId) {
 
-        String account = tokenProvider.getUserAccount(request);
-
-        Member member = memberService.existMember(account);
-
-        if(member==null){
-            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
-        }
 
         Post post = checkUtill.isPresentPost(postId);
         if(post == null){
@@ -101,6 +92,7 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findAllByPost(post);
         List<CommentResponseDto> commentResponseDtoList = new ArrayList<>();
         Long count = (long) commentList.size();
+
         for (Comment comment : commentList) {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
@@ -113,8 +105,12 @@ public class CommentService {
                             .build()
             );
         }
+        CommentCountResponseDto commentCountResponseDto =CommentCountResponseDto.builder()
+                .commentcount(count)
+                .responseDto(commentResponseDtoList)
+                .build();
 
-        return ResponseDto.success(commentResponseDtoList,"댓글 조회완료");
+        return ResponseDto.success(commentCountResponseDto,"댓글 조회완료");
     }
 
 
