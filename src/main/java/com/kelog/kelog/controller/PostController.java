@@ -21,16 +21,16 @@ public class PostController {
     private final PostService postService;
 
     //게시글전체 (메인페이지)
-    @GetMapping("")
+    @GetMapping("/post")
     public List<PostAllByResponseDto> getAllPost(
-                                            @RequestParam("page") int page,
-                                            @RequestParam("size") int size){
+                                            @RequestParam(value = "page",defaultValue = "1") int page,
+                                            @RequestParam(value = "size",defaultValue = "20") int size){
 
-        return postService.getAllPost(page,size);
+        return postService.GetNewPost(page,size);
     }
     //게시글 해당 멤버 작성글 보기
     @GetMapping("/{memberId}")
-    public PostAllByMemberResponseDto getMemberPostings(
+    public List<PostAllByResponseDto> getMemberPostings(
             @PathVariable Long memberId,
             @RequestParam("page") int page,
             @RequestParam("size") int size){
@@ -41,8 +41,8 @@ public class PostController {
 
     //게시글 상세보기
     @GetMapping("/post/{id}")
-    private ResponseDto<?> getPost(@PathVariable Long id) {
-        return postService.getPost(id);
+    private ResponseDto<?> getPost(@PathVariable Long id, HttpServletRequest request) {
+        return postService.getPost(id, request);
     }
 
 
@@ -52,12 +52,6 @@ public class PostController {
                                      @RequestPart(value = "info") PostRequestDto postRequestDto,
                                      HttpServletRequest request) throws IOException {
         return postService.createPost(multipartFile, postRequestDto, request);
-    }
-
-    //
-    @GetMapping("/post")
-    public ResponseDto<?> getPostList(){
-        return postService.getPostList();
     }
 
     //게시글 수정
