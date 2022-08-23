@@ -38,6 +38,8 @@
 ### 기본 세팅
 
 #### Packages
+<pre>
+<code>
 Controller
 ├── /MemberController  /PostController /CommentController /HeartController
 Cors
@@ -62,8 +64,8 @@ Tag
 ├── /TagNameAndCount /TagResponseDto
 Util
 ├── /CheckUtil /UserCheck
-
-
+</code>
+</pre>
 
 ### Schedule
 #### FE
