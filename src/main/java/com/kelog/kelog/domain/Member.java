@@ -35,6 +35,9 @@ public class Member {
     @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<Post> postList;
 
+    @OneToMany(mappedBy = "member", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    private List<Comment> commentList;
+
     public Member(SignUpRequestDto requestDto,String image) {
         this.account = requestDto.getAccount();
         this.password = requestDto.getPassword();
