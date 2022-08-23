@@ -22,6 +22,8 @@ public class CommentResponseDto {
 
     private String comment;
 
+    private String profileimage;
+
     private LocalDate createdAt;
 
     private LocalDate modifiedAt;

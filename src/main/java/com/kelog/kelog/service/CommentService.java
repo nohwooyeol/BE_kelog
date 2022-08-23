@@ -4,8 +4,6 @@ import com.kelog.kelog.domain.Comment;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.repository.CommentRepository;
-import com.kelog.kelog.repository.MemberRepository;
-import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentCountResponseDto;
 import com.kelog.kelog.response.CommentResponseDto;
@@ -14,7 +12,6 @@ import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -96,6 +93,7 @@ public class CommentService {
                             .username(comment.getUsername())
                             .comment(comment.getComment())
                             .memberId(post.getMember().getId())
+                            .profileimage(post.getMember().getProfileimage())
                             .createdAt(comment.getCreatedAt())
                             .modifiedAt(comment.getModifiedAt())
                             .build()
