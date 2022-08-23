@@ -22,18 +22,18 @@ public class Comment extends Timestamped{
 
     @Column(nullable = false)
     private String comment; //내용
-
-    @Column(nullable = false)
-    private String username; //닉네임
+//
+//    @Column(nullable = false)
+//    private String username; //닉네임
 
 
     @JoinColumn(name = "post_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY) //게시글하나에 댓글이 여러개 연관관계
     private Post post;
 
-//    @JoinColumn(name ="member_id", nullable = false)
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    private Member member;  // 댓글을 작성한 회원
+    @JoinColumn(name ="member_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Member member;  // 댓글을 작성한 회원
 
     public void update(CommentRequestDto commentRequestDto){this.comment = commentRequestDto.getComment();}
 
