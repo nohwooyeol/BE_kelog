@@ -69,7 +69,7 @@ public class PostController {
         return postService.deletePost(id, postRequestDto, request);
     }
 
-    @GetMapping("/info/{postid}")
+    @GetMapping("/info/{postId}")
     @ResponseBody
     public MemberResponseDto userinfo(@PathVariable Long postId){
         return postService.userinfo(postId);
