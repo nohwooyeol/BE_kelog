@@ -9,6 +9,7 @@ import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
+import com.kelog.kelog.response.MemberResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
 import lombok.RequiredArgsConstructor;
@@ -127,4 +128,5 @@ public class MemberService {
     public boolean accountCheck(String account) {
         return memberRepository.existsAllByAccount(account);
     }
+
 }

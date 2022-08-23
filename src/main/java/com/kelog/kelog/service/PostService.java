@@ -116,14 +116,14 @@ public class PostService{
         if (null == post){
             return ResponseDto.fail("NOT_POST", "게시글을 찾을 수 없습니다.");
         }
-        boolean existLike;
-        String account = tokenProvider.getUserAccount(request);
-        if (account==null) {
-            existLike = false;
-        } else {
-            Long memberid = memberService.existMember(account).getId();
-            existLike = heartRepository.existsAllByPostAndMemberId(post,memberid);
-        }
+        boolean existLike=false;
+//        String account = tokenProvider.getUserAccount(request);
+//        if (account==null) {
+//            existLike = false;
+//        } else {
+//            Long memberid = memberService.existMember(account).getId();
+//            existLike = heartRepository.existsAllByPostAndMemberId(post,memberid);
+//        }
 
         return ResponseDto.success(
                 PostResponseDto.builder()
@@ -222,5 +222,13 @@ public class PostService{
             }
         }
     }
+
+//    게시글에서 유저 정보 불러오기
+    public MemberResponseDto userinfo(Long id) {
+        return new MemberResponseDto(postRepository.getReferenceById(id).getMember());
+    }
+
+
+
 
 }

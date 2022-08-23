@@ -3,6 +3,7 @@ package com.kelog.kelog.controller;
 import com.kelog.kelog.request.IdCheckDto;
 import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
+import com.kelog.kelog.response.MemberResponseDto;
 import com.kelog.kelog.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -49,5 +50,6 @@ public class MemberController {
     public boolean idcheck(@RequestBody IdCheckDto idCheckDto) {
        return memberService.accountCheck(idCheckDto.getAccount());
     }
+
 
 }

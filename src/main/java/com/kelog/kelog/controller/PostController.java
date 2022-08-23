@@ -2,6 +2,7 @@ package com.kelog.kelog.controller;
 
 
 import com.kelog.kelog.request.PostRequestDto;
+import com.kelog.kelog.response.MemberResponseDto;
 import com.kelog.kelog.response.PostAllByMemberResponseDto;
 import com.kelog.kelog.response.PostAllByResponseDto;
 import com.kelog.kelog.response.ResponseDto;
@@ -66,6 +67,12 @@ public class PostController {
     public ResponseDto<?> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto,
                                      HttpServletRequest request) {
         return postService.deletePost(id, postRequestDto, request);
+    }
+
+    @GetMapping("/info/{postid}")
+    @ResponseBody
+    public MemberResponseDto userinfo(@PathVariable Long postId){
+        return postService.userinfo(postId);
     }
 
 }
