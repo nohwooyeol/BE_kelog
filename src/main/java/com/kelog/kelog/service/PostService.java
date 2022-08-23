@@ -10,20 +10,16 @@ import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.domain.Tags;
 import com.kelog.kelog.repository.TagsRepository;
-import com.kelog.kelog.response.MemberResponseDto;
-import com.kelog.kelog.response.PostAllByMemberResponseDto;
-import com.kelog.kelog.response.PostResponseDto;
+import com.kelog.kelog.response.*;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.repository.PostRepository;
 import com.kelog.kelog.request.PostRequestDto;
-import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.security.UserDetailsServiceImpl;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
-import com.kelog.kelog.tag.TagNameAndCount;
-import com.kelog.kelog.tag.TagResponseDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.aspectj.weaver.Lint;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -184,11 +180,11 @@ public class PostService{
     }
 
     // 전체 게시글 조회 (최적화)
-    public List<PostResponseDto> getAllPost(int page, int size) {
-        List<Post> postPaging = postRepository.findAllPaging(PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt")));
-        return postPaging
+    public List<PostAllByResponseDto> getAllPost(int page, int size) {
+        List<Post> postPaging = postRepository.findAllByPaging((PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"))));
+       return postPaging
                 .stream()
-                .map(PostResponseDto::new)
+                .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
 
@@ -198,25 +194,17 @@ public class PostService{
         Pageable pageable = PageRequest.of(page, size);
 
         Member member = getMemberById(memberId);
-        System.out.println(member.getId());
         MemberResponseDto memberResponseDto = new MemberResponseDto(member);
 
-        List<Post> findPostingByMember = postRepository.findAllMemberId(memberId,pageable);
-        System.out.println(member.getId());
+        List<Post> findPostByMember = postRepository.findAllMemberId(memberId,pageable);
 
-        List<PostResponseDto> postResponseDto = findPostingByMember
+        List<PostResponseDto> postResponseDto = findPostByMember
                 .stream()
                 .map(PostResponseDto::new)
                 .collect(toList());
 
-        List<TagNameAndCount> tagList = tagsRepository.findAll(memberId);
 
-        List<TagResponseDto> tagResponseDto = tagList
-                .stream()
-                .map(TagResponseDto::new)
-                .collect(toList());
-
-        return new PostAllByMemberResponseDto(postResponseDto,tagResponseDto,memberResponseDto);
+        return new PostAllByMemberResponseDto(postResponseDto,memberResponseDto);
 
     }
 
