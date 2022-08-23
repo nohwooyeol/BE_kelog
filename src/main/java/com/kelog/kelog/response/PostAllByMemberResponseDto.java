@@ -10,13 +10,11 @@ import java.util.List;
 @NoArgsConstructor
 public class PostAllByMemberResponseDto {
     private List<PostResponseDto> postResponseDto;
-    private List<TagResponseDto> tagList;
     private MemberResponseDto memberResponseDto;
 
 
-    public PostAllByMemberResponseDto(List<PostResponseDto> postResponseDto, List<TagResponseDto> tagResponseDto, MemberResponseDto memberResponseDto) {
+    public PostAllByMemberResponseDto(List<PostResponseDto> postResponseDto, MemberResponseDto memberResponseDto) {
         this.postResponseDto = postResponseDto;
-        this.tagList = tagResponseDto;
         this.memberResponseDto = memberResponseDto;
     }
 }
