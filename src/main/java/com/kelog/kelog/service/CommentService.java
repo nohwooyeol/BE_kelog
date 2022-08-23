@@ -93,7 +93,7 @@ public class CommentService {
                             .username(comment.getMember().getUsername())
                             .comment(comment.getComment())
                             .memberId(post.getMember().getId())
-                            .profileimage(post.getMember().getProfileimage())
+                            .profileimage(comment.getMember().getProfileimage())
                             .createdAt(comment.getCreatedAt())
                             .modifiedAt(comment.getModifiedAt())
                             .build()

@@ -64,8 +64,8 @@ public class PostService{
     @Transactional
     public ResponseDto<?> createPost(MultipartFile multipartFile, PostRequestDto requestDto, HttpServletRequest request) throws IOException {
 
-        Member member = memberRepository.getReferenceById(1L);
-//      Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+//        Member member = memberRepository.getReferenceById(1L);
+      Member member = memberService.existMember(tokenProvider.getUserAccount(request));
 
         String imgUrl = null;
 //        !multipartFile.isEmpty 쓸 때 오류!  빈값이 아닌 null 오면 오류 생김!
@@ -225,6 +225,7 @@ public class PostService{
 
 //    게시글에서 유저 정보 불러오기
     public MemberResponseDto userinfo(Long id) {
+
         return new MemberResponseDto(postRepository.getReferenceById(id).getMember());
     }
 
