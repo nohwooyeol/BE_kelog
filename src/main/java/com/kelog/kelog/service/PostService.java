@@ -68,7 +68,10 @@ public class PostService{
     public ResponseDto<?> createPost(MultipartFile multipartFile, PostRequestDto requestDto, HttpServletRequest request) throws IOException {
 
 //        Member member = memberRepository.getReferenceById(1L);
-      Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+        if (!(request.getHeader("Authorization")==null)){
+            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+        }
+        Member member = memberService.existMember(tokenProvider.getUserAccount(request));
 
         String imgUrl = null;
 //        !multipartFile.isEmpty 쓸 때 오류!  빈값이 아닌 null 오면 오류 생김!
@@ -115,6 +118,9 @@ public class PostService{
     //게시글 상세보기
     @Transactional
     public ResponseDto<?> getPost(Long id, HttpServletRequest request){
+        System.out.println("-----------------------------------------------------------------");
+        System.out.println(request.getHeader("Authorization"));
+        System.out.println("-----------------------------------------------------------------");
         Post post = isPresentPost(id);
         if (null == post){
             throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
@@ -149,10 +155,20 @@ public class PostService{
     @Transactional
     public  ResponseDto<?> updatePost(Long id, PostRequestDto requestDto, HttpServletRequest request)
     {
+        Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+        if (null == member) {
+            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+        }
+
         Post post = isPresentPost(id);
         if (null == post) {
             throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
+
+        if (!(post.getMember() == member)) {
+            throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
+        }
+
         List<Tags> tags = getTag(post);
         tagsRepository.deleteAll(tags);
 
@@ -164,12 +180,19 @@ public class PostService{
     @Transactional
     public ResponseDto<?> deletePost(Long PostId, HttpServletRequest request)
     {
+
+
         Member member = memberService.existMember(tokenProvider.getUserAccount(request));
         if (null == member) {
             return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
         }
+
         Post post = isPresentPost(PostId);
         if (null == post) {
+            throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
+        }
+
+        if (!(post.getMember() == member)) {
             throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
 

@@ -122,7 +122,7 @@ public class MemberService {
         }
         String Token = tokenProvider.createToken(member);
         response.addHeader("Authorization",Token);
-        return "로그인에 성공했습니다."+"111111111";
+        return "로그인에 성공했습니다.";
     }
 //    멤버 조회용
     public Member existMember(String account){
