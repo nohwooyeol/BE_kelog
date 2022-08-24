@@ -1,7 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
 name: CI
-
 on:
   push:
     branches:
@@ -10,10 +9,11 @@ on:
 # 본인이 설정한 값을 여기서 채워넣습니다.
 # 리전, 버킷 이름, CodeDeploy 앱 이름, CodeDeploy 배포 그룹 이름
 env:
-  AWS_REGION: ap-northeast-2
-  S3_BUCKET_NAME: hanghae99-wonyoung
-  CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app
-  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-deployment-group
+  AWS_REGION: us-east-1
+  S3_BUCKET_NAME: myblog-s3
+  CODE_DEPLOY_APPLICATION_NAME: codedeploytest
+  CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: ckstn0225-group
+  RESOURCE_PATH: ./src/main/resources/application.yml
 
 permissions:
   contents: read
@@ -36,6 +36,20 @@ jobs:
           distribution: 'temurin'
           java-version: '11'
 
+      # properties 설정 파일 쓰기
+      - name: Generate Environment Variables File for Properties
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET }}
+
+
+      # 권한 재설정
+      - name: Run chmod to make gradlew executable
+        run: chmod +x ./gradlew
+
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
         uses: gradle/gradle-build-action@0d13054264b0bb894ded474f08ebb30921341cee
@@ -46,8 +60,8 @@ jobs:
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-access-key-id: ${{ secrets.AWS_ACCESS }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET }}
           aws-region: ${{ env.AWS_REGION }}
 
       # (5) 빌드 결과물을 S3 버킷에 업로드
