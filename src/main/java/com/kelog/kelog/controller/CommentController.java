@@ -24,11 +24,11 @@ public class CommentController {
     }
 
     //댓글 조회
-    @GetMapping("/{postId}")
-    public List<ResponseDto<?> getComment(@PathVariable Long postId,
-                                 HttpServletRequest request ){
-        return commentService.getComment(postId,request);
-    }
+//    @GetMapping("/{postId}")
+//    public List<ResponseDto<?> getComment(@PathVariable Long postId,
+//                                 HttpServletRequest request ){
+//        return commentService.getComment(postId,request);
+//    }
 
     //댓글 수정
     @PutMapping("/{commentId}")
