@@ -31,12 +31,12 @@ public class CommentController {
 //    }
 
     //댓글 수정
-    @PutMapping("/{commentId}")
-    public ResponseDto<?> updateComment(@PathVariable Long commentId,
-                                        @RequestBody CommentRequestDto commentRequestDto,
-                                        HttpServletRequest request ){
-        return commentService.updateComment(commentId,commentRequestDto,request);
-    }
+//    @PutMapping("/{commentId}")
+//    public ResponseDto<?> updateComment(@PathVariable Long commentId,
+//                                        @RequestBody CommentRequestDto commentRequestDto,
+//                                        HttpServletRequest request ){
+//        return commentService.updateComment(commentId,commentRequestDto,request);
+//    }
 
     //댓글 삭제
     @DeleteMapping("/{commentId}")
