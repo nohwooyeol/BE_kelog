@@ -10,6 +10,8 @@ import com.kelog.kelog.domain.Heart;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
 import com.kelog.kelog.domain.Tags;
+import com.kelog.kelog.exception.CustomException;
+import com.kelog.kelog.exception.ErrorCode;
 import com.kelog.kelog.repository.HeartRepository;
 import com.kelog.kelog.repository.TagsRepository;
 import com.kelog.kelog.response.*;
@@ -115,7 +117,7 @@ public class PostService{
     public ResponseDto<?> getPost(Long id, HttpServletRequest request){
         Post post = isPresentPost(id);
         if (null == post){
-            return ResponseDto.fail("NOT_POST", "게시글을 찾을 수 없습니다.");
+            throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
         boolean existLike=false;
         if (!(request.getHeader("Authorization")==null)){
@@ -149,7 +151,7 @@ public class PostService{
     {
         Post post = isPresentPost(id);
         if (null == post) {
-            return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
+            throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
         List<Tags> tags = getTag(post);
         tagsRepository.deleteAll(tags);
@@ -168,7 +170,7 @@ public class PostService{
         }
         Post post = isPresentPost(PostId);
         if (null == post) {
-            return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
+            throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
 
         postRepository.delete(post);

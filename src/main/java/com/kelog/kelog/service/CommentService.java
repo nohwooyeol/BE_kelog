@@ -3,6 +3,8 @@ package com.kelog.kelog.service;
 import com.kelog.kelog.domain.Comment;
 import com.kelog.kelog.domain.Member;
 import com.kelog.kelog.domain.Post;
+import com.kelog.kelog.exception.CustomException;
+import com.kelog.kelog.exception.ErrorCode;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.request.CommentRequestDto;
 import com.kelog.kelog.response.CommentCountResponseDto;
@@ -46,12 +48,13 @@ public class CommentService {
         Member member = memberService.existMember(account);
 
         if(member==null){
-            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+           // return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+            throw new CustomException(ErrorCode.COMMENT_ACCOUNT_NOT_FOUND_ERROR);
         }
 
         Post post = checkUtill.isPresentPost(postId);
         if(post==null){
-            return ResponseDto.fail("NOT_POST","게시글이 없습니다.");
+            throw new CustomException(ErrorCode.COMMENT_POST_NOT_FOUND_ERROR);
         }
 
         Comment comment = Comment.builder()
@@ -79,7 +82,8 @@ public class CommentService {
 
         Post post = checkUtill.isPresentPost(postId);
         if(post == null){
-            return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
+            //return ResponseDto.fail("POST_NOT_FOUND","게시글이 없습니다.");
+            throw new CustomException(ErrorCode.COMMENT_POST_NOT_FOUND_ERROR);
         }
 
 
@@ -120,12 +124,14 @@ public class CommentService {
         Member member = memberService.existMember(account);
 
         if(member==null) {
-            return ResponseDto.fail("NOT_ACCOUNT", "로그인을 해주세요");
+            //return ResponseDto.fail("NOT_ACCOUNT", "로그인을 해주세요");
+            throw new CustomException(ErrorCode.COMMENT_ACCOUNT_NOT_FOUND_ERROR);
         }
 
         Comment comment = checkUtill.isPresentComment(commentId);
         if(comment == null){
-            return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
+            //return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
+            throw new CustomException(ErrorCode.COMMENT_COMMENT_NOT_FOUND_ERROR);
         }
 
         comment.update(commentRequestDto);
@@ -148,15 +154,16 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> deleteComment(Long commentId,
                                         HttpServletRequest request) {
-        System.out.println(tokenProvider.takeToken(request));
         String account = tokenProvider.getUserAccount(request);
         Member member = memberService.existMember(account);
         if(member==null){
-            return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+            //return ResponseDto.fail("NOT_ACCOUNT","로그인을 해주세요");
+            throw new CustomException(ErrorCode.COMMENT_ACCOUNT_NOT_FOUND_ERROR);
         }
         Comment comment = checkUtill.isPresentComment(commentId);
         if(comment == null){
-            return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
+            //return ResponseDto.fail("NOT_COMMENT","댓글이 없습니다");
+            throw new CustomException(ErrorCode.COMMENT_COMMENT_NOT_FOUND_ERROR);
         }
 
         commentRepository.delete(comment);
