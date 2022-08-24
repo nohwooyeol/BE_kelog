@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @RequiredArgsConstructor
 @Controller
-@RequestMapping("/api")
+@RequestMapping(value = "/api", produces = "application/json; charset=utf8")
 public class MemberController {
 
     private final MemberService memberService;
