@@ -42,6 +42,7 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public ResponseDto<?> deleteComment(@PathVariable Long commentId,
                                         HttpServletRequest request ){
+
         return commentService.deleteComment(commentId,request);
     }
 
