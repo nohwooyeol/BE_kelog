@@ -48,7 +48,7 @@ jobs:
         
         # 권한 재설정
       - name: Run chmod to make gradlew executable
-      run: chmod +x ./gradle
+        run: chmod +x ./gradle
         -
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
