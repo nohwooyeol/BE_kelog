@@ -60,9 +60,9 @@ public class HeartService {
                     .build();
             heartRepository.save(heart);
         }
-
         Long heart = heartRepository.countAllByPost(post);
         post.updateHeart(heart);
+        postRepository.save(post);
 
 
         return ResponseDto.success(post.getHeartCount());
