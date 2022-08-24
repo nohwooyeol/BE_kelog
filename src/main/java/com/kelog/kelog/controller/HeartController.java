@@ -25,9 +25,7 @@ public class HeartController {
     @ResponseBody
     public ResponseDto<?> Like(@PathVariable Long id, HttpServletRequest request){
 
-
         return heartService.Like(id,request);
-
 
     }
 

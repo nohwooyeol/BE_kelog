@@ -55,8 +55,8 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = subToken(request);
 
 //      hasText = 문자가 유효한지 체크하는 메소드 (공백을 제외하고 길이가 1이상인경우 true 값을 내보냄)
-//
-        if (StringUtils.hasText(jwt) && tokenProvider.CheckToken(request)){
+        if (!(subToken(request) == null)){
+            if (StringUtils.hasText(jwt) && tokenProvider.CheckToken(request)){
             //매니저님 주석 -- Payload 부분에는 토큰에 담을 정보가 들어있습니다. 여기에 담는 정보의 한 ‘조각’ 을 클레임(claim) 이라고 부름
             //매니저님 주석 -- name / value 의 한 쌍으로 이뤄져있음
             Claims claims;
@@ -80,7 +80,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
             Authentication authentication = tokenProvider.getAuthentication(jwt);
             SecurityContextHolder.getContext().setAuthentication(authentication);
-        }
+        }}
+
 
         filterChain.doFilter(request, response);
 

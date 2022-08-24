@@ -1,6 +1,8 @@
 package com.kelog.kelog.security;
 
 
+import com.kelog.kelog.security.jwt.AccessDeniedHandlerException;
+import com.kelog.kelog.security.jwt.AuthenticationEntryPointException;
 import com.kelog.kelog.security.jwt.JwtConfiguration;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -34,10 +37,15 @@ public class SecurityConfiguration {
     private final TokenProvider tokenProvider;
     private final UserDetailsServiceImpl userDetailsService;
 
-// ------------------------뭔지 모름 검색 해봐야함
+    private final AccessDeniedHandlerException accessDeniedHandlerException;
+
+    private final AuthenticationEntryPointException authenticationEntryPointException;
+
+
+    // ------------------------뭔지 모름 검색 해봐야함
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer() {
-// h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
+    // h2-console 사용에 대한 허용 (CSRF, FrameOptions 무시)
         return (web) -> web.ignoring()
                 .antMatchers("/h2-console/**");
     }
@@ -60,6 +68,8 @@ public class SecurityConfiguration {
 
 //                예외 처리
                 .exceptionHandling()
+                .authenticationEntryPoint(authenticationEntryPointException)
+                .accessDeniedHandler(accessDeniedHandlerException)
 
 //                세션 미사용 설정! 토큰은 세션이 필요가 없응께!
                 .and()
@@ -69,9 +79,11 @@ public class SecurityConfiguration {
 //                api 허용 목록!
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/**").permitAll()
                 .antMatchers("/api/login").permitAll()
+                .antMatchers("/api/register").permitAll()
                 .anyRequest().authenticated()
+
 //                필터 적용
                 .and()
                 .apply(new JwtConfiguration( secretKey, tokenProvider, userDetailsService));
