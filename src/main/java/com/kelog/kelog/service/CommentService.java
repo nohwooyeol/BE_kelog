@@ -64,6 +64,7 @@ public class CommentService {
                 .commentId(comment.getId())
                 .username(comment.getMember().getUsername())
                 .comment(comment.getComment())
+                .profileimage(comment.getMember().getProfileimage())
                 .createdAt(comment.getCreatedAt())
                 .modifiedAt(comment.getModifiedAt())
                 .build();
@@ -128,9 +129,14 @@ public class CommentService {
         }
 
         comment.update(commentRequestDto);
+        System.out.println(comment.getMember().getProfileimage());
         return ResponseDto.success(
                 CommentResponseDto.builder()
                         .commentId(comment.getId())
+                        .username(comment.getMember().getUsername())
+                        .comment(comment.getComment())
+                        .profileimage(comment.getMember().getProfileimage())
+                        .createdAt(comment.getCreatedAt())
                         .modifiedAt(comment.getModifiedAt())
                 .build(),
                 "댓글 수정완료");
@@ -142,9 +148,7 @@ public class CommentService {
     @Transactional
     public ResponseDto<?> deleteComment(Long commentId,
                                         HttpServletRequest request) {
-        System.out.println("-------------------------------------------------");
         System.out.println(tokenProvider.takeToken(request));
-        System.out.println("-------------------------------------------------");
         String account = tokenProvider.getUserAccount(request);
         Member member = memberService.existMember(account);
         if(member==null){

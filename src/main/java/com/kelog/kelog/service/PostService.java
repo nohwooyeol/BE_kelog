@@ -31,6 +31,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -117,13 +118,15 @@ public class PostService{
             return ResponseDto.fail("NOT_POST", "게시글을 찾을 수 없습니다.");
         }
         boolean existLike=false;
-//        String account = tokenProvider.getUserAccount(request);
-//        if (account==null) {
-//            existLike = false;
-//        } else {
-//            Long memberid = memberService.existMember(account).getId();
-//            existLike = heartRepository.existsAllByPostAndMemberId(post,memberid);
-//        }
+        if (!(request.getHeader("Authorization")==null)){
+            String account = tokenProvider.getUserAccount(request);
+            if (account==null) {
+                existLike = false;
+            } else {
+                Long memberid = memberService.existMember(account).getId();
+                existLike = heartRepository.existsAllByPostAndMemberId(post,memberid);
+            }}
+
 
         return ResponseDto.success(
                 PostResponseDto.builder()
@@ -157,8 +160,12 @@ public class PostService{
 
     // 게시글 삭제
     @Transactional
-    public ResponseDto<?> deletePost(Long PostId, PostRequestDto requestDto, HttpServletRequest request)
+    public ResponseDto<?> deletePost(Long PostId, HttpServletRequest request)
     {
+        Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+        if (null == member) {
+            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+        }
         Post post = isPresentPost(PostId);
         if (null == post) {
             return ResponseDto.fail("NOT_FOUND", "존재하지 않는 게시글 id 입니다.");
@@ -176,31 +183,56 @@ public class PostService{
 
     // 전체 게시글 조회 (NEW)
     public List<PostAllByResponseDto> GetNewPost(int page, int size) {
-        List<Post> postPaging = postRepository.findAllByPaging((PageRequest.of(page - 1, size, Sort.by(Sort.Direction.DESC, "createdAt"))));
+        List<Post> postPaging = postRepository.findAllByPaging((PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "createdAt"))));
        return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
 
-    //  내 게시물 전체 목록
-    public List<PostAllByResponseDto> getMemberPost(Long memberId, int page, int size) {
-
+    public List<PostAllByResponseDto> GetTodayPost(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
+        List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(LocalDate.now(),pageable);
+        return postPaging
+                .stream()
+                .map(PostAllByResponseDto::new)
+                .collect(toList());
+    }
+    public List<PostAllByResponseDto> GetWeekPost(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusDays(6),pageable);
+        return postPaging
+                .stream()
+                .map(PostAllByResponseDto::new)
+                .collect(toList());
+    }
+    public List<PostAllByResponseDto> GetMonthPost(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusMonths(1),pageable);
+        return postPaging
+                .stream()
+                .map(PostAllByResponseDto::new)
+                .collect(toList());
+    }
+    public List<PostAllByResponseDto> GetYearPost(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusYears(1),pageable);
+        return postPaging
+                .stream()
+                .map(PostAllByResponseDto::new)
+                .collect(toList());
+    }
 
-        Member member = getMemberById(memberId);
-        MemberResponseDto memberResponseDto = new MemberResponseDto(member);
-
-        List<Post> findPostByMember = postRepository.findAllMemberId(memberId,pageable);
-
+    //  내 게시물 전체 목록
+    public List<PostAllByResponseDto> getmypost(HttpServletRequest request, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Member member = memberService.existMember(tokenProvider.getUserAccount(request));
+        List<Post> findPostByMember = postRepository.findAllMemberId(member.getId(),pageable);
         List<PostAllByResponseDto> postResponseDto = findPostByMember
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
-
-
         return postResponseDto;
-
     }
 
     private List<Tags> getTag(Post post) {

@@ -28,8 +28,7 @@ public class TokenProvider {
 
     // 토큰 유효시간 5분 설정 (1000L = 1초, 1000L * 60 = 1분)
     //    엑세스 토큰만 있어 10분으로 설정
-    private static final long TOKEN_VALID_TIME = 1000L * 60 * 10;
-    private static final String Auto_KEY = "Auth";
+    private static final long TOKEN_VALID_TIME = 1000L * 60 * 60;
     private final UserDetailsServiceImpl userDetailsService;
     public static String BEARER_PREFIX = "Bearer ";
     private final Key key;

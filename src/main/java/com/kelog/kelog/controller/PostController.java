@@ -7,6 +7,7 @@ import com.kelog.kelog.response.PostAllByMemberResponseDto;
 import com.kelog.kelog.response.PostAllByResponseDto;
 import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.service.PostService;
+import com.kelog.kelog.shared.QueryEnum;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,22 +24,27 @@ public class PostController {
 
     //게시글전체 (메인페이지)
     @GetMapping("/post")
-    public List<PostAllByResponseDto> getAllPost(
-                                            @RequestParam(value = "page",defaultValue = "1") int page,
-                                            @RequestParam(value = "size",defaultValue = "20") int size){
-
-        return postService.GetNewPost(page,size);
+    public List<PostAllByResponseDto> getAllPost(@RequestParam(value = "Category",defaultValue = "NEW")QueryEnum queryEnum,
+                                                 @RequestParam(value = "page",defaultValue = "0") int page,
+                                                 @RequestParam(value = "size",defaultValue = "20") int size,
+                                                 HttpServletRequest request){
+        switch (queryEnum) {
+            case NEW:
+                return postService.GetNewPost(page, size);
+            case TODAY:
+                return postService.GetTodayPost(page,size);
+            case WEEK:
+                return postService.GetWeekPost(page,size);
+            case MONTH:
+                return postService.GetMonthPost(page,size);
+            case YEAR:
+                return postService.GetYearPost(page,size);
+            case MYPOST:
+                return postService.getmypost(request, page,size);
+        }
+        return postService.GetNewPost(page, size);
     }
-    //게시글 해당 멤버 작성글 보기
-    @GetMapping("/{memberId}")
-    public List<PostAllByResponseDto> getMemberPostings(
-            @PathVariable Long memberId,
-            @RequestParam("page") int page,
-            @RequestParam("size") int size){
 
-
-        return postService.getMemberPost(memberId, page, size);
-    }
 
     //게시글 상세보기
     @GetMapping("/post/{id}")
@@ -64,9 +70,9 @@ public class PostController {
 
     // 게시글 삭제
     @DeleteMapping("/post/delete/{id}")
-    public ResponseDto<?> deletePost(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto,
+    public ResponseDto<?> deletePost(@PathVariable Long id,
                                      HttpServletRequest request) {
-        return postService.deletePost(id, postRequestDto, request);
+        return postService.deletePost(id,request);
     }
 
     @GetMapping("/info/{postId}")
