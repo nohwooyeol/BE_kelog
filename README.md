@@ -6,7 +6,7 @@
 - [velog](https://velog.io/) Clone Coding Project
 
 ### When
-- 2022.08.20 ~ 
+- 2022.08.19 ~ 2022.08.25
 
 ### Who
 - FE : 김주형, 나유진
