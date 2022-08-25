@@ -7,9 +7,9 @@ import com.kelog.kelog.exception.CustomException;
 import com.kelog.kelog.exception.ErrorCode;
 import com.kelog.kelog.repository.CommentRepository;
 import com.kelog.kelog.request.CommentRequestDto;
-import com.kelog.kelog.response.CommentCountResponseDto;
-import com.kelog.kelog.response.CommentResponseDto;
-import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.controller.response.CommentCountResponseDto;
+import com.kelog.kelog.controller.response.CommentResponseDto;
+import com.kelog.kelog.controller.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.util.CheckUtill;
 import lombok.RequiredArgsConstructor;
@@ -66,6 +66,7 @@ public class CommentService {
         commentRepository.save(comment);
         CommentResponseDto responseDto = CommentResponseDto.builder()
                 .commentId(comment.getId())
+                .account(comment.getMember().getAccount())
                 .username(comment.getMember().getUsername())
                 .comment(comment.getComment())
                 .profileimage(comment.getMember().getProfileimage())
@@ -96,6 +97,7 @@ public class CommentService {
             commentResponseDtoList.add(
                     CommentResponseDto.builder()
                             .commentId(comment.getId())
+                            .account(comment.getMember().getAccount())
                             .username(comment.getMember().getUsername())
                             .comment(comment.getComment())
                             .memberId(post.getMember().getId())
@@ -140,6 +142,7 @@ public class CommentService {
         return ResponseDto.success(
                 CommentResponseDto.builder()
                         .commentId(comment.getId())
+                        .account(comment.getMember().getAccount())
                         .username(comment.getMember().getUsername())
                         .comment(comment.getComment())
                         .profileimage(comment.getMember().getProfileimage())

@@ -1,4 +1,4 @@
-package com.kelog.kelog.response;
+package com.kelog.kelog.controller.response;
 
 
 import com.kelog.kelog.domain.Member;

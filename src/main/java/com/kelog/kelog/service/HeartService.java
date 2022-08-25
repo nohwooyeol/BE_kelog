@@ -7,7 +7,7 @@ import com.kelog.kelog.exception.CustomException;
 import com.kelog.kelog.exception.ErrorCode;
 import com.kelog.kelog.repository.HeartRepository;
 import com.kelog.kelog.repository.PostRepository;
-import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.controller.response.ResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

@@ -2,10 +2,9 @@ package com.kelog.kelog.controller;
 
 
 import com.kelog.kelog.request.PostRequestDto;
-import com.kelog.kelog.response.MemberResponseDto;
-import com.kelog.kelog.response.PostAllByMemberResponseDto;
-import com.kelog.kelog.response.PostAllByResponseDto;
-import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.controller.response.MemberResponseDto;
+import com.kelog.kelog.controller.response.PostAllByResponseDto;
+import com.kelog.kelog.controller.response.ResponseDto;
 import com.kelog.kelog.service.PostService;
 import com.kelog.kelog.shared.QueryEnum;
 import lombok.RequiredArgsConstructor;

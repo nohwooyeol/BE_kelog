@@ -1,4 +1,4 @@
-package com.kelog.kelog.response;
+package com.kelog.kelog.controller.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -17,6 +17,8 @@ public class CommentResponseDto {
     private Long commentId;
 
     private Long memberId;
+
+    private String account;
 
     private String username;
 

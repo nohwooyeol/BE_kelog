@@ -1,6 +1,5 @@
-package com.kelog.kelog.response;
+package com.kelog.kelog.controller.response;
 
-import com.kelog.kelog.tag.TagResponseDto;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

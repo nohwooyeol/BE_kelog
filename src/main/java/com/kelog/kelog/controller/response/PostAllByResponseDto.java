@@ -1,30 +1,27 @@
-package com.kelog.kelog.response;
+package com.kelog.kelog.controller.response;
 
 import com.kelog.kelog.domain.Post;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
-public class PostResponseDto {
+public class PostAllByResponseDto {
     private Long id;
     private String title;
     private List<String> tags;
     private String content;
     private String imgUrl;
     private Long heartCount;
-    private boolean heartPush;
     private LocalDate createdAt;
     private LocalDate modifiedAt;
+    private String account;
+    private String profileimage;
 
-    public PostResponseDto(Post post) {
+    public PostAllByResponseDto(Post post) {
         this.id = post.getPostId();
         this.title = post.getTitle();
         this.tags = post.getTags();
@@ -33,6 +30,8 @@ public class PostResponseDto {
         this.heartCount = post.getHeartCount();
         this.createdAt = post.getCreatedAt();
         this.modifiedAt = post.getModifiedAt();
+        this.account = post.getMember().getAccount();
+        this.profileimage = post.getMember().getProfileimage();
     }
 
 }

@@ -1,7 +1,7 @@
 package com.kelog.kelog.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kelog.kelog.response.ResponseDto;
+import com.kelog.kelog.controller.response.ResponseDto;
 import com.kelog.kelog.security.UserDetailsServiceImpl;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
