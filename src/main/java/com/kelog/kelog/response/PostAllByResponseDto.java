@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -16,8 +17,8 @@ public class PostAllByResponseDto {
     private String content;
     private String imgUrl;
     private Long heartCount;
-    private LocalDate createdAt;
-    private LocalDate modifiedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
     private String account;
     private String profileimage;
 

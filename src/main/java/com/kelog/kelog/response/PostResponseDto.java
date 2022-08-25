@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Builder
@@ -21,8 +22,8 @@ public class PostResponseDto {
     private String imgUrl;
     private Long heartCount;
     private boolean heartPush;
-    private LocalDate createdAt;
-    private LocalDate modifiedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     public PostResponseDto(Post post) {
         this.id = post.getPostId();

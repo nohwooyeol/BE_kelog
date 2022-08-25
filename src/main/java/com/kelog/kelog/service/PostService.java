@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.transaction.Transactional;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -222,7 +223,7 @@ public class PostService{
     }
 
     public List<PostAllByResponseDto> GetTodayPost(int page, int size) {
-        LocalDate localDate = LocalDate.now();
+        LocalDateTime localDate = LocalDateTime.now();
         Pageable pageable = PageRequest.of(page, size);
         List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(localDate,pageable);
         return postPaging
@@ -231,7 +232,7 @@ public class PostService{
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetWeekPost(int page, int size) {
-        LocalDate localDate = LocalDate.now();
+        LocalDateTime localDate = LocalDateTime.now();
         Pageable pageable = PageRequest.of(page, size);
         List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusDays(6),pageable);
         return postPaging
@@ -240,7 +241,7 @@ public class PostService{
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetMonthPost(int page, int size) {
-        LocalDate localDate = LocalDate.now();
+        LocalDateTime localDate = LocalDateTime.now();
         Pageable pageable = PageRequest.of(page, size);
         List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusMonths(1),pageable);
         return postPaging
@@ -249,7 +250,7 @@ public class PostService{
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetYearPost(int page, int size) {
-        LocalDate localDate = LocalDate.now();
+        LocalDateTime localDate = LocalDateTime.now();
         Pageable pageable = PageRequest.of(page, size);
         List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusYears(1),pageable);
         return postPaging

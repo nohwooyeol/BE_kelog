@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,9 +29,9 @@ public interface PostRepository extends JpaRepository<Post, Long> {
     List<Post> findAllByTodayContents(PageRequest createdAt);
 
 
-    List<Post> findAllByCreatedAtOrderByHeartCountDesc(LocalDate localDate, Pageable pageable);
+    List<Post> findAllByCreatedAtOrderByHeartCountDesc(LocalDateTime localDate, Pageable pageable);
 
-    List<Post> findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate localDate, Pageable pageable);
+    List<Post> findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDateTime localDate, Pageable pageable);
 
     // 회원 게시물 조회
     @Query("select p from Post p " +

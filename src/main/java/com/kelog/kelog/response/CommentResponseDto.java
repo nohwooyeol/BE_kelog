@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 
 @Builder
@@ -26,9 +27,9 @@ public class CommentResponseDto {
 
     private String profileimage;
 
-    private LocalDate createdAt;
+    private LocalDateTime createdAt;
 
-    private LocalDate modifiedAt;
+    private LocalDateTime modifiedAt;
 
 
 }
