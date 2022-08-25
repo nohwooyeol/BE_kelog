@@ -68,8 +68,10 @@ public class PostService{
     public ResponseDto<?> createPost(MultipartFile multipartFile, PostRequestDto requestDto, HttpServletRequest request) throws IOException {
 
 //        Member member = memberRepository.getReferenceById(1L);
+
         if (request.getHeader("Authorization")==null){
             return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+
         }
         Member member = memberService.existMember(tokenProvider.getUserAccount(request));
 
@@ -157,7 +159,8 @@ public class PostService{
     {
         Member member = memberService.existMember(tokenProvider.getUserAccount(request));
         if (null == member) {
-            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+//            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+            throw new CustomException(ErrorCode.POST_ACCOUNT_NOT_FOUND_ERROR);
         }
 
         Post post = isPresentPost(id);
@@ -185,7 +188,8 @@ public class PostService{
 
         Member member = memberService.existMember(tokenProvider.getUserAccount(request));
         if (null == member) {
-            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+//            return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
+            throw new CustomException(ErrorCode.POST_ACCOUNT_NOT_FOUND_ERROR);
         }
 
         Post post = isPresentPost(PostId);
@@ -218,32 +222,36 @@ public class PostService{
     }
 
     public List<PostAllByResponseDto> GetTodayPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(LocalDate.now(),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(localDate,pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetWeekPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusDays(6),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusDays(6),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetMonthPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusMonths(1),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusMonths(1),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetYearPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusYears(1),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusYears(1),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
@@ -266,18 +274,19 @@ public class PostService{
         return tagsRepository.findAllByPost(post);
     }
     private Member getMemberById(Long memberId) {
-        return memberRepository.findById(memberId).orElseThrow(()->new IllegalArgumentException("조회된 멤버가 없습니다"));
+        return memberRepository.findById(memberId).orElseThrow(()->new CustomException(ErrorCode.POST_MEMEBER_NOT_FOUND_ERROR));
     }
     private void validateMember(Member member, Long memberId) {
         if (!memberId.equals(member.getId())) {
-            throw new IllegalArgumentException("해당 게시물에 대한 수정 권한이 없습니다.");
+            throw new CustomException(ErrorCode.POST_MEMBER_NOT_AUTH_ERROR);
         }
     }
     private void dupTag(List<Tags> tagsList) {
         for(Tags t : tagsList){
             Tags dupTag = tagsRepository.findTagsByTagNameAndPost(t.getTagName(),t.getPost());
             if(dupTag != null){
-                throw new IllegalArgumentException("중복된 태그");
+                //throw new IllegalArgumentException("중복된 태그");
+                throw new CustomException(ErrorCode.POST_TAG_DUPLICATION_ERROR);
             }
         }
     }
