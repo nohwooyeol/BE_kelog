@@ -219,32 +219,36 @@ public class PostService{
     }
 
     public List<PostAllByResponseDto> GetTodayPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(LocalDate.now(),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtOrderByHeartCountDesc(localDate,pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetWeekPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusDays(6),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusDays(6),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetMonthPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusMonths(1),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusMonths(1),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
                 .collect(toList());
     }
     public List<PostAllByResponseDto> GetYearPost(int page, int size) {
+        LocalDate localDate = LocalDate.now();
         Pageable pageable = PageRequest.of(page, size);
-        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(LocalDate.now().minusYears(1),pageable);
+        List<Post> postPaging = postRepository.findAllByCreatedAtGreaterThanOrderByHeartCountDesc(localDate.minusYears(1),pageable);
         return postPaging
                 .stream()
                 .map(PostAllByResponseDto::new)
