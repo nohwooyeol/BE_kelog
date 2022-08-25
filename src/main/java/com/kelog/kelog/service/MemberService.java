@@ -105,7 +105,7 @@ public class MemberService {
         return "회원가입에 성공했습니다!";
     }
 
-    public String login(LoginDto loginDto, HttpServletResponse response) {
+    public MemberResponseDto login(LoginDto loginDto, HttpServletResponse response) {
         Member member = existMember(loginDto.getAccount());
         System.out.println("--------------------------------------------------------");
         System.out.println(member.getAccount());
@@ -122,7 +122,7 @@ public class MemberService {
         }
         String Token = tokenProvider.createToken(member);
         response.addHeader("Authorization",Token);
-        return "로그인에 성공했습니다.";
+        return new MemberResponseDto(member);
     }
 //    멤버 조회용
     public Member existMember(String account){

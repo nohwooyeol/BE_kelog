@@ -68,7 +68,7 @@ public class PostService{
     public ResponseDto<?> createPost(MultipartFile multipartFile, PostRequestDto requestDto, HttpServletRequest request) throws IOException {
 
 //        Member member = memberRepository.getReferenceById(1L);
-        if (!(request.getHeader("Authorization")==null)){
+        if (request.getHeader("Authorization")==null){
             return ResponseDto.fail("NOT_FOUND", "로그인 해주세요.");
         }
         Member member = memberService.existMember(tokenProvider.getUserAccount(request));
@@ -173,7 +173,8 @@ public class PostService{
         tagsRepository.deleteAll(tags);
 
         post.update(requestDto);
-        return  ResponseDto.success(post);
+
+        return  ResponseDto.success(new PostResponseDto(post));
     }
 
     // 게시글 삭제
@@ -196,8 +197,9 @@ public class PostService{
             throw new CustomException(ErrorCode.POST_POST_NOT_FOUND_ERROR);
         }
 
+        Long deleteid = post.getPostId();
         postRepository.delete(post);
-        return ResponseDto.success("Delete success");
+        return ResponseDto.success(deleteid);
     }
 
     @Transactional
