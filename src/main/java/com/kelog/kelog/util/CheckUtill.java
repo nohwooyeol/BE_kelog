@@ -31,7 +31,6 @@ public class CheckUtill {
     public Comment isPresentComment(Long id) {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         return optionalComment.orElse(null);
-
     }
 
 //    @Transactional(readOnly = true)
