@@ -12,8 +12,10 @@ on:
 env:
   AWS_REGION: ap-northeast-2
   S3_BUCKET_NAME: my-github-actions-s3-bucket1
+  S3_IMAGE_BUCKET_NAME: hanghae99-wonyoung
   CODE_DEPLOY_APPLICATION_NAME: my-codedeploy-app
   CODE_DEPLOY_DEPLOYMENT_GROUP_NAME: my-codedeploy-deployment-group
+
 
 permissions:
   contents: read
@@ -35,6 +37,21 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '11'
+          
+              # properties 설정 파일 쓰기
+      - name: Generate Environment Variables File for Properties
+        uses: microsoft/variable-substitution@v1
+        with:
+          files: ${{ env.RESOURCE_PATH }}
+        env:
+          cloud.aws.credentials.accessKey: ${{ secrets.AWS_ACCESS }}
+          cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET }}
+          jwt.secret : ${{ secrets.JWT_SECRET }}
+          cloud.aws.s3.bucket : ${{ env.S3_IMAGE_BUCKET_NAME }}
+          spring.datasource.url : ${{ secret.RDS_URL }}
+          spring.datasource.username : ${{ secret.RDS_ADMIN }}
+          spring.datasource.password : ${{ secret.RDS_PASSWORD }}
+    
 
       # (3) Gradle build (Test 제외)
       - name: Build with Gradle
