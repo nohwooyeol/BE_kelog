@@ -24,29 +24,24 @@ public class CommentController {
     }
 
     //댓글 조회
-//    @GetMapping("/{postId}")
-//    public List<ResponseDto<?> getComment(@PathVariable Long postId,
-//                                 HttpServletRequest request ){
-//        return commentService.getComment(postId,request);
-//    }
+    @GetMapping("/{postId}")
+    public ResponseDto<?> getAllComment(@PathVariable Long postId){
+        return commentService.getAllComment(postId);
+    }
 
     //댓글 수정
-//    @PutMapping("/{commentId}")
-//    public ResponseDto<?> updateComment(@PathVariable Long commentId,
-//                                        @RequestBody CommentRequestDto commentRequestDto,
-//                                        HttpServletRequest request ){
-//        return commentService.updateComment(commentId,commentRequestDto,request);
-//    }
+    @PutMapping("/{commentId}")
+    public ResponseDto<?> updateComment(@PathVariable Long commentId,
+                                        @RequestBody CommentRequestDto commentRequestDto,
+                                        HttpServletRequest request ){
+        return commentService.updateComment(commentId,commentRequestDto,request);
+    }
 
     //댓글 삭제
     @DeleteMapping("/{commentId}")
     public ResponseDto<?> deleteComment(@PathVariable Long commentId,
                                         HttpServletRequest request ){
-
         return commentService.deleteComment(commentId,request);
     }
-
-
-
 
 }
