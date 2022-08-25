@@ -33,7 +33,7 @@ public class MemberController {
     //  로그인
     @PostMapping("/login")
     @ResponseBody
-    public String signin(@RequestBody LoginDto loginDto,HttpServletResponse response){
+    public MemberResponseDto signin(@RequestBody LoginDto loginDto,HttpServletResponse response){
 
         return memberService.login(loginDto,response);
     }
