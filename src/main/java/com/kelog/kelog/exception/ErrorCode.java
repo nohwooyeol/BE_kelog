@@ -39,8 +39,15 @@ public enum ErrorCode {
     
     //게시글 예외처리
 
-    POST_POST_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,"115","게시글이 존재하지 않습니다");
+    POST_POST_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,"115","게시글이 존재하지 않습니다"),
 
+    POST_ACCOUNT_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,"116","로그인을 해주세요!"),
+
+    POST_MEMBER_NOT_AUTH_ERROR(HttpStatus.BAD_REQUEST,"117","해당 게시물에 대한 수정 권한이 없습니다."),
+
+    POST_TAG_DUPLICATION_ERROR(HttpStatus.BAD_REQUEST,"118","중복된 태그"),
+
+    POST_MEMEBER_NOT_FOUND_ERROR(HttpStatus.NOT_FOUND,"119","조회된 멤버가 없습니다");
 
 
 
