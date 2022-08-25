@@ -1,7 +1,7 @@
 package com.kelog.kelog.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.kelog.kelog.controller.response.ResponseDto;
+import com.kelog.kelog.response.ResponseDto;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;

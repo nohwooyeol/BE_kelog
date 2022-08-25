@@ -1,6 +1,6 @@
 package com.kelog.kelog.controller;
 
-import com.kelog.kelog.controller.response.ResponseDto;
+import com.kelog.kelog.response.ResponseDto;
 import com.kelog.kelog.service.HeartService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;

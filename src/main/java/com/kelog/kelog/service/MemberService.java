@@ -11,7 +11,7 @@ import com.kelog.kelog.exception.ErrorCode;
 import com.kelog.kelog.repository.MemberRepository;
 import com.kelog.kelog.request.LoginDto;
 import com.kelog.kelog.request.SignUpRequestDto;
-import com.kelog.kelog.controller.response.MemberResponseDto;
+import com.kelog.kelog.response.MemberResponseDto;
 import com.kelog.kelog.security.jwt.TokenProvider;
 import com.kelog.kelog.shared.CommonUtils;
 import lombok.RequiredArgsConstructor;

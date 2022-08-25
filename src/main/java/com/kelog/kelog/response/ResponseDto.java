@@ -1,4 +1,4 @@
-package com.kelog.kelog.controller.response;
+package com.kelog.kelog.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
