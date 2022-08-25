@@ -48,9 +48,9 @@ jobs:
           cloud.aws.credentials.secretKey: ${{ secrets.AWS_SECRET }}
           jwt.secret : ${{ secrets.JWT_SECRET }}
           cloud.aws.s3.bucket : ${{ env.S3_IMAGE_BUCKET_NAME }}
-          spring.datasource.url : ${{ secret.RDS_URL }}
-          spring.datasource.username : ${{ secret.RDS_ADMIN }}
-          spring.datasource.password : ${{ secret.RDS_PASSWORD }}
+          spring.datasource.url : ${{ secrets.RDS_URL }}
+          spring.datasource.username : ${{ secrets.RDS_ADMIN }}
+          spring.datasource.password : ${{ secrets.RDS_PASSWORD }}
     
 
       # (3) Gradle build (Test 제외)
